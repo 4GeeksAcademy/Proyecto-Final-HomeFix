@@ -27,7 +27,7 @@ const LastPublications = () => {
     const latestProducts = store.products.slice(0, 4);
     return (<>
         <div className='w-[90%] m-auto'>
-            <h1 className='my-3'>Últimas Publicaciones</h1>
+            <h1 className='mt-5 text-center'>Últimas Publicaciones</h1>
             <div className='card-container w-full flex justify-between flex-wrap'>
                 {latestProducts.map((product, index) => (
                     <div className='card' key={product.id} style={{ width: '250px', margin: '10px' }}>

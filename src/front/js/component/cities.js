@@ -1,4 +1,5 @@
 import React from 'react';
+import "../styles/cities.css";
 
 import BarcelonaIMG from '../../img/Barcelona.png';
 import BilbaoIMG from '../../img/Bilbao.png';
@@ -28,18 +29,17 @@ const Cities = () => {
 
     return (
         <>
-            <div className='w-[90%] m-auto'>
-                <h1 className='my-3'>Ciudades</h1>
-                <p>Actualmente HomeFix se encuentra en las siguientes ciudades. ¡Pronto estaremos en nuevas!</p>
-                <div className='cities-container'>
+            <div className='w-[90%] mx-auto my-5 flex flex-col justify-center'>
+                <h1 className='mb-3 text-center'>Ciudades</h1>
+                <p className='text-center mb-3'>Actualmente HomeFix se encuentra en las siguientes ciudades. ¡Pronto estaremos más!</p>
+                <div className='cities-container flex flex-wrap justify-center gap-4'>
                     {cities.map((city, index) => (
-                        <div key={index} className='city' style={{ width: '20%', float: 'left', marginRight: '2%' }}>
+                        <div key={index} className='city' style={{ width: '15%' }}>
                             <img src={city.image} alt={city.name} style={{ width: '100%', height: 'auto' }} />
-                            <p>{city.name}</p>
+                            <p className='text-center'>{city.name}</p>
                         </div>
                     ))}
                 </div>
-                <div style={{ clear: 'both' }}></div>
             </div>
         </>
     );

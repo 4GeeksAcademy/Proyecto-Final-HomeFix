@@ -10,6 +10,7 @@ import Login from "./component/login";
 import Signup from "./component/signup";
 import CreateProduct from "./component/createproduct.js";
 import Card from "./component/card.js";
+import ProfessionalDetail from '../js/pages/ProfessionalDetail.js'
 
 
 
@@ -46,6 +47,8 @@ const App = () => {
         )} */}
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/professionaldetail" element={<ProfessionalDetail />} />
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/card" element={<Card />} />
