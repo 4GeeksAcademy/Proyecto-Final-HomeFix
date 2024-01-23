@@ -37,6 +37,8 @@ const App = () => {
     <RootLayout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route element={!store.token ? <Login /> : <Navigate to="/home" />} path="/login" />
+
 
         {/* {store.token ? (
           <Route element={<Home />} path="/home" />
@@ -47,7 +49,6 @@ const App = () => {
           />
         )} */}
         <Route path="/home" element={<Home />} />
-        <Route path="/login" element={<Login />} />
 
         <Route path="/signup" element={<Signup />} />
         <Route path="/card" element={<Card />} />
