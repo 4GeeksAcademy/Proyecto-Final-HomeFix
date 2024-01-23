@@ -20,8 +20,8 @@ const Sidebar = () => {
         { name: "Buzón", link: "/", icon: IoMailOutline },
         { name: "Favoritos", link: "/", icon: AiOutlineHeart },
         { name: "HOMEFIX" },
-        { name: "¿Quiénes sómos?", link: "/", icon: GoPeople},
-        { name: "¿Cómo funciona?", link: "/", icon: BsQuestionCircle },
+        { name: "¿Quiénes sómos?", link: "/about", icon: GoPeople},
+        { name: "Preguntas Frecuentes", link: "/questions", icon: BsQuestionCircle },
         { name: "Politica de seguridad", link: "/", icon: IoKeyOutline },
         { name: "Contáctanos", link: "/", icon: AiOutlineMessage },
     ];

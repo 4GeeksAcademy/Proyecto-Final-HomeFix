@@ -10,7 +10,9 @@ import Login from "./component/login";
 import Signup from "./component/signup";
 import CreateProduct from "./component/createproduct.js";
 import Card from "./component/card.js";
-
+import Questions from "./component/questions.js";
+import About from "./component/about.js";
+import Politica from "./component/politica.js";
 
 
 import { Navigate } from 'react-router-dom';
@@ -55,6 +57,9 @@ const App = () => {
         <Route path="/stroage" element={<Stroage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/build/:bID" element={<Build />} />
+        <Route path="/questions" element={<Questions />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/politica" element={<Politica />} />
 
         {/* {!store.token ? (
           <Route element={isUserAuthenticated ? <Navigate to="/home" /> : <Login />} path="/login" />

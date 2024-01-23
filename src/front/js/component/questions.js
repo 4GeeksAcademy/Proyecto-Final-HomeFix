@@ -23,8 +23,9 @@ const Questions = () => {
     // Si queremos agregamos mas preguntas y respuestas
   ];
 
-  return (
-    <div className="container mx-auto p-8">
+  return (<>
+
+      <div className="container mx-auto p-8">
       <h2 className="text-2xl font-bold mb-4">Preguntas Frecuentes</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {questions.map((question, index) => (
@@ -35,6 +36,7 @@ const Questions = () => {
         ))}
       </div>
     </div>
+  </>
   );
 };
 
