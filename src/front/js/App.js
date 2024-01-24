@@ -10,7 +10,6 @@ import Login from "./component/login";
 import Signup from "./component/signup";
 import CreateProduct from "./component/createproduct.js";
 import Card from "./component/card.js";
-import ProfessionalDetail from '../js/pages/ProfessionalDetail.js'
 
 
 
@@ -36,6 +35,8 @@ const App = () => {
     <RootLayout>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route element={!store.token ? <Login /> : <Navigate to="/home" />} path="/login" />
+
 
         {/* {store.token ? (
           <Route element={<Home />} path="/home" />
@@ -48,8 +49,6 @@ const App = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/login" element={<Login />} />
 
-        <Route path="/professionaldetail" element={<ProfessionalDetail />} />
-
         <Route path="/signup" element={<Signup />} />
         <Route path="/card" element={<Card />} />
         <Route path="/createproduct" element={<CreateProduct />} />
@@ -58,6 +57,10 @@ const App = () => {
         <Route path="/stroage" element={<Stroage />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/build/:bID" element={<Build />} />
+        <Route path="/questions" element={<Questions />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/politicaprivacidad" element={<PoliticaPrivacidad />} />
+        <Route path="/contactanos" element={<Contactanos />} />
 
         {/* {!store.token ? (
           <Route element={isUserAuthenticated ? <Navigate to="/home" /> : <Login />} path="/login" />
