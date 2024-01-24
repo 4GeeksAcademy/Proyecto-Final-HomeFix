@@ -1,0 +1,47 @@
+
+.container {
+    background: linear-gradient(to right, #ffe7d6, #ffffff);
+    border-radius: 8px;
+    box-shadow: 0 10px 10px rgba(18, 18, 18, 0.943);
+    padding: 100px;
+    margin: 30px auto;
+  }
+
+h2 {
+    color: #333;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 16px;
+  }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 90px;
+    
+    
+    
+  }
+  
+  .card {
+    background-color: #fff;
+    border: 2px solid #ddd;
+    border-radius: 16px;
+    padding: 30px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+
+h3 {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  p {
+    color: #1d1111;
+    font-size: 13px;
+  }
+  
+  

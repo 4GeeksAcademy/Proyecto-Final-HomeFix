@@ -1,0 +1,38 @@
+html, body{
+    max-width: 100vw;
+}
+.relative.flex.h-16.items-center.justify-between {
+    height: 2rem;
+}
+
+.layout-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.top-nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+}
+
+.sidebar {
+    width: 200px; 
+    flex-shrink: 0;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 10px;
+    max-width: 100vw;
+    display: flex;
+    flex-align: center;
+    justify-content: center;
+    
+}
