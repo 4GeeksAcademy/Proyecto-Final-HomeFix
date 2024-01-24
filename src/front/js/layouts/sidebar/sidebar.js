@@ -215,11 +215,11 @@ const Sidebar = () => {
                 <BsQuestionCircle size={23} className="min-w-max" />
                 Preguntas Frecuentes
               </NavLink>
-              <NavLink to={"/politica"} className="link">
+              <NavLink to={"/politicaprivacidad"} className="link">
                 <IoKeyOutline size={23} className="min-w-max" />
                 Politica de Privacidad
               </NavLink>
-              <NavLink to={"/settings"} className="link">
+              <NavLink to={"/contactanos"} className="link">
                 <AiOutlineMessage size={23} className="min-w-max" />
                 Contactanos
               </NavLink>
