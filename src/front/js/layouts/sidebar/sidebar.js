@@ -207,19 +207,19 @@ const Sidebar = () => {
                   HomeFix
                 </small>
               )}
-              <NavLink to={"/settings"} className="link">
+              <NavLink to={"/about"} className="link">
                 <GoPeople size={23} className="min-w-max" />
                 ¿Quienes Somos?
               </NavLink>
-              <NavLink to={"/settings"} className="link">
+              <NavLink to={"/questions"} className="link">
                 <BsQuestionCircle size={23} className="min-w-max" />
-                ¿Como Funciona?
+                Preguntas Frecuentes
               </NavLink>
-              <NavLink to={"/settings"} className="link">
+              <NavLink to={"/politicaprivacidad"} className="link">
                 <IoKeyOutline size={23} className="min-w-max" />
                 Politica de Privacidad
               </NavLink>
-              <NavLink to={"/settings"} className="link">
+              <NavLink to={"/contactanos"} className="link">
                 <AiOutlineMessage size={23} className="min-w-max" />
                 Contactanos
               </NavLink>
