@@ -48,12 +48,12 @@ const Home = () => {
 
   return (
     
-    <div className='w-[90%] m-auto z-[0]'>
+    <div className='w-[90%] m-auto z-[0]' style={{ backgroundColor: 'white' }}>
       
-      <h2 className='my-3'>Últimas Publicaciones</h2>
+      <h1 className='m-5 text-center'>Últimas publicaciones</h1>
       <div className='card-container w-full flex justify-between flex-wrap gap-y-16 z-[0]'>
         {store.products.map((product) => (
-          <div className='card' key={product.id}>
+          <div className='card p-1' key={product.id}>
             <Slider {...settings}>
               {product.images_urls && product.images_urls.length > 0 ? (
                 product.images_urls.map((image, index) => (
@@ -85,11 +85,11 @@ const Home = () => {
               <div className='mt-3 flex gap-2'>
                  <button className='button-primary bg-[#2A2A2A]' onClick={contactar}>Contactar</button>
 
-                <button className='button-icon'>
+                {/* <button className='button-icon'>
                   <span className='opacity-50'>♥️</span>
-                </button>
+                </button> */}
                 <button className='button-icon'>
-                  <span className='opacity-50'>👁️</span>
+                  <span className='opacity-50'>🔍</span>
                 </button>
               </div>
             </div>

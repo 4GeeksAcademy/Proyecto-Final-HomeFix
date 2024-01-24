@@ -34,7 +34,7 @@ const Professions = () => {
     return (
         <>
             <div className='w-full mx-auto my-5 flex flex-col justify-center bg-white border rounded-[3%]'>
-                <h1 className='mb-3 text-center'>Categorías</h1>
+                <h1 className='mb-5 text-center'>Categorías</h1>
                 <div className='categories-container flex flex-wrap justify-center gap-4'>
                     {categories.map((category, index) => (
                         <div key={index} className='category-item flex flex-col items-center' style={{ width: '16.66%', padding: '10px' }}>
