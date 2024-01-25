@@ -14,6 +14,7 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  
   useEffect(() => {
     const fetchProducts = async () => {
       try {

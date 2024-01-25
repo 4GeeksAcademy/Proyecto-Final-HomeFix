@@ -15,6 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			token: "",
+			idmango: "",
+			wallet_id: "",
 			username: "",
 			secret: "",
 			user: {
@@ -24,6 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			products: [],
 			provinces: "",
 			productsbyuser: [],
+			email: "",
 
 		}, // Add comma here
 		actions: {
@@ -82,6 +85,72 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			completeperfil: async (first_name, last_name, address_line, city, region, postal_code, country, email) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/create_user`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({ first_name, last_name, address_line, city, region, postal_code, country, email })
+					});
+
+					const data = await response.json();
+					console.log(data);
+
+					setStore({ ...store, user_id: data.user_id });
+					localStorage.setItem('idmango', data.user_id);
+
+				} catch (error) {
+					console.error("Error during signup:", error);
+				}
+			},
+			crear_wallet: async (user_id) => {
+				const store = getStore();
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/create_wallet`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify({ user_id })
+					});
+
+					const data = await response.json();
+					console.log(data);
+
+					setStore({ ...store, wallet_id: data.wallet_id });
+					localStorage.setItem('wallet_id', data.wallet_id);
+
+				}
+				catch (error) {
+					console.error("Error during signup:", error);
+				}
+			},
+
+			walletDetails: async (wallet_id) => {
+				const store = getStore();
+				console.log(wallet_id);
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/wallet_detail?wallet_id=${wallet_id}`, {
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
+
+					const data = await response.json();
+					console.log(data);
+
+					setStore({ ...store, wallet_details: data });
+
+				}
+				catch (error) {
+					console.error("Error during signup:", error);
+				}
+			},
+
 			setToken: async (email, password) => {
 				const store = getStore();
 				const response = await fetch(`${process.env.BACKEND_URL}/api/token`, {
@@ -92,8 +161,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					body: JSON.stringify({ email, password })
 				});
 				const data = await response.json();
-				setStore({ ...store, token: data.token });
-				localStorage.setItem('token', data.token)
+				setStore({ ...store, token: data.token, email: data.email });
+				localStorage.setItem('token', data.token, 'email', data.email);
 			},
 
 
@@ -108,6 +177,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/signup`, {
+						mode: 'cors',
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json'
@@ -115,11 +185,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify({ email, password })
 					});
 					const data = await response.json();
-
-
-
-					setStore({ ...store, token: data.token});
+					setStore({ ...store, token: data.token, email:data.email});
 					localStorage.setItem('token', data.token);
+					localStorage.setItem('email', data.email);
 
 
 				} catch (error) {
@@ -133,7 +201,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
-							'Authorization': `Bearer ${store.token}`
+							'Authorization': `Bearer ${localStorage.token}`
 						},
 						body: JSON.stringify({ name, description, price, images_urls, province })
 					});
@@ -158,6 +226,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error loading products from backend:", error);
 				}
 			},
+
 			getAllProvinces: async () => {
 				const store = getStore();
 				try {
@@ -170,44 +239,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error loading provinces from backend:", error);
 				}
 			},
-			getUserProducts: async () => {
-				const store = getStore();
-				try {
-					const response = await fetch(`${process.env.BACKEND_URL}/api/productsbyuser`);
-					const data = await response.json();
+			// getUserProducts: async () => {
+			// 	const store = getStore();
+			// 	try {
+			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/productsbyuser`);
+			// 		const data = await response.json();
 
-					setStore({ ...store, productsbyuser: data });
+			// 		setStore({ ...store, productsbyuser: data });
 
-				} catch (error) {
-					console.error("Error loading provinces from backend:", error);
-				}
-			},
+			// 	} catch (error) {
+			// 		console.error("Error loading provinces from backend:", error);
+			// 	}
+			// },
 
 
-			getUserProducts: async (email, token) => {
-				const store = getStore();
+			// getUserProducts: async (email, token) => {
+			// 	const store = getStore();
 				
-				try {
-					const url = `${process.env.BACKEND_URL}/api/productsbyuser?email=${encodeURIComponent(email)}`;
+			// 	try {
+			// 		const url = `${process.env.BACKEND_URL}/api/productsbyuser?email=${encodeURIComponent(email)}`;
 			
-					const response = await fetch(url, {
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application/json',
-							'Authorization': `Bearer ${token}`
-						}
-					});
+			// 		const response = await fetch(url, {
+			// 			method: 'GET',
+			// 			headers: {
+			// 				'Content-Type': 'application/json',
+			// 				'Authorization': `Bearer ${token}`
+			// 			}
+			// 		});
 			
-					const data = await response.json();
+			// 		const data = await response.json();
 			
-					// Convierte data a una cadena JSON antes de almacenarla en localStorage
-					localStorage.setItem('productsbyuser', JSON.stringify(data));
+			// 		// Convierte data a una cadena JSON antes de almacenarla en localStorage
+			// 		localStorage.setItem('productsbyuser', JSON.stringify(data));
 			
-					setStore({ ...store, productsbyuser: data });
-				} catch (error) {
-					console.error("Error loading user products from backend:", error);
-				}
-			},
+			// 		setStore({ ...store, productsbyuser: data });
+			// 	} catch (error) {
+			// 		console.error("Error loading user products from backend:", error);
+			// 	}
+			// },
 			
 
 

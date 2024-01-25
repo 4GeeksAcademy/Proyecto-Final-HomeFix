@@ -13,7 +13,7 @@ import Politicaprivacidad from './component/politicaprivacidad';
 import Contactanos from './component/contactanos';
 import About from './component/about';
 import Questions from "./component/questions.js";
-
+import CompletePerfil from "./component/completeperfil.js";
 import CreateProduct from './component/createproduct';
 import NuevaPublicacion from './component/NuevaPublicacion';
 import Card from './component/card';
@@ -42,6 +42,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contactanos" element={<Contactanos />} />
         <Route path="/createproduct" element={<CreateProduct />} />
+        <Route path="/completeperfil" element={<CompletePerfil />} />
 
         <Route path="/authentication" element={<Authentication />} />
         <Route path="/stroage" element={<Stroage />} />
