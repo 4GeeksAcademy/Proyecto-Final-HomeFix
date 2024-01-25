@@ -98,8 +98,6 @@ def create_product():
             seller=user, 
             images_urls=images_urls,
             province=province_name
-
-
         )
 
         db.session.add(new_product)
@@ -176,3 +174,11 @@ def get_user_products():
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+    
+@api.route("/user/<int:user_id>", methods=["GET"])
+def get_user_profile(user_id):
+    user = User.query.get(user_id)
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify(user.serialize()), 200
