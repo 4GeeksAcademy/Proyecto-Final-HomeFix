@@ -186,19 +186,13 @@ const Sidebar = () => {
             <li>
               <NavLink to={"/profile/publicaciones"} className="link">
                 <TbReportAnalytics size={23} className="min-w-max" />
-                Mis Publicaciones
+                Mis datos
               </NavLink>
             </li>
             <li>
               <NavLink to={"/profile/chat"} className="link">
                 <IoMailOutline size={23} className="min-w-max" />
                 Buzón
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={"/settings"} className="link">
-                <AiOutlineHeart size={23} className="min-w-max" />
-                Favoritos
               </NavLink>
             </li>
             <li className='border-b py-3 border-slate-300'>

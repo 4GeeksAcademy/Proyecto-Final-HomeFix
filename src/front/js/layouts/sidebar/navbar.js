@@ -56,10 +56,10 @@ const NavBar = () => {
     return (
 
 
-        <div className='flex  bg-white h-[4rem] w-full z-[999]'>
+        <div className='flex bg-white h-[4rem] w-full z-[999]'>
 
             <div className='w-full flex content-center justify-center mt-[8px]'><SearchBar /></div>
-            
+
             <div className='flex justify-end '>
                 <div className='flex mx-3 justify-center items-center'>
                     {isLoggedIn ? (
