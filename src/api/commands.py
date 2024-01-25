@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, User, Province
+from api.models import db, User_be, Province
 
 
 """
@@ -20,7 +20,7 @@ def setup_commands(app):
     def insert_test_users(count):
         print("Creating test users")
         for x in range(1, int(count) + 1):
-            user = User()
+            user = User_be()
             user.email = "test_user" + str(x) + "@test.com"
             user.password = "123456"
             user.is_active = True

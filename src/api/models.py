@@ -4,7 +4,7 @@ import json
 
 db = SQLAlchemy()
 
-class User(db.Model):
+class User_be(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
@@ -14,7 +14,7 @@ class User(db.Model):
     products = db.relationship('Product', backref='seller', lazy=True)
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'<User_be {self.email}>'
 
     def serialize(self):
         return {
@@ -28,7 +28,7 @@ class Product(db.Model):
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     price = db.Column(db.Float, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_be.id'), nullable=False)
     province_id = db.Column(db.Integer, db.ForeignKey('province.id'))
     province = db.relationship('Province', back_populates='products')
     images_urls = db.Column(db.String(2000))

@@ -17,7 +17,7 @@ const Signup = () => {
         await actions.signup(email, password);
         setEmail('');
         setPassword('');
-        navigate("/home");
+        navigate("/completeperfil");
     }
 
     const registerchat = async () => {

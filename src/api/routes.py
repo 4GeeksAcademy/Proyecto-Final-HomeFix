@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User, Product, Province
+from api.models import db, User_be, Product, Province
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -15,10 +15,99 @@ import os, requests
 
 api = Blueprint('api', __name__)
 
-CORS(api)
+CORS(api, origins=["http://localhost:3000", "http://localhost:3001","http://localhost:3001/api/todoist/auth", "http://localhost:3001/api/todoist/callback","http://127.0.0.1:3000/home?"])
+
 load_dotenv()
 
 chat_engine_private_key = os.getenv("CHAT_ENGINE_PRIVATE_KEY")
+
+
+# MangoPay
+import mangopay
+
+mangopay.client_id='dmo_65ab763c2ee8b'
+mangopay.apikey='KoJzc1AmwJvObVmLcv3PNjt6QeiY8v0MjCVJYM9HyHVUdu0V1g'
+
+from mangopay.api import APIRequest
+handler = APIRequest(sandbox=True)
+
+from mangopay.resources import (User, NaturalUser)
+from mangopay.utils import Address
+from mangopay.resources import Wallet
+
+
+
+# Mango  create User
+
+handler = APIRequest(sandbox=True)
+
+@api.route('/wallet_detail', methods=['GET'])
+def details_client():
+    wallet_id = request.args.get("wallet_id")
+    walletint = int(wallet_id)
+    wallet = Wallet.get(walletint)
+    balance = wallet.balance
+
+    return jsonify({'success': True,  'wallet_balance': str(balance)})
+
+
+@api.route('/create_user', methods=['POST'])
+def create_user():
+
+    data = request.get_json()
+
+    try:
+        natural_user = NaturalUser(
+            first_name=data.get("first_name"),
+            last_name=data.get("last_name"),
+            address=Address(
+                address_line_1=data.get("address_line"),
+                address_line_2='AddressLine2',
+                city=data.get("city"),
+                region=data.get("region"),
+                postal_code=data.get("postal_code"),
+                country='FR'
+            ),
+            birthday=1300186358,
+            nationality='FR',
+            country_of_residence='FR',
+            occupation='Writer',
+            income_range='6',
+            proof_of_identity=None,
+            proof_of_address=None,
+            person_type='NATURAL',
+            email=data.get("email"),
+            user_category='PAYER',
+            tag='custom tag'
+        )
+        natural_user.save()
+
+        return jsonify({'success': True, 'user_id': natural_user.get_pk()})
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+    
+
+# Mango  create Wallet
+
+@api.route('/create_wallet', methods=['POST'])
+def create_wallet():
+    
+        data = request.get_json()
+    
+        try:
+            wallet = Wallet(Owners=[data.get("user_id")],
+                Description='Wallet of '+data.get("user_id"),
+                Currency='EUR',
+                tag='wallet tag'
+            )
+            wallet.save()
+
+            print(wallet.balance)
+    
+            return jsonify({'success': True, 'wallet_balance' : str(wallet.balance) ,'wallet_id': wallet.get_pk()})
+
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)})
 
 @api.route("/signup", methods=["POST"])
 def signup():
@@ -27,17 +116,17 @@ def signup():
     email = data.get("email")
     password = data.get("password")
 
-    if User.query.filter_by(email=email).first():
+    if User_be.query.filter_by(email=email).first():
         return jsonify({"msg": "Email already exists"}), 400
 
-    new_user = User(email=email, password=password, is_active=True)
+    new_user = User_be(email=email, password=password, is_active=True)
 
     db.session.add(new_user)
     db.session.commit()
 
     access_token = create_access_token(identity=new_user.id)
 
-    return jsonify({"token": access_token, "user_id": new_user.id}), 201
+    return jsonify({"token": access_token, "email": email, "userbe_id": new_user.id}), 201
 
 
 
@@ -56,7 +145,7 @@ def create_token():
     password = request.json.get("password", None)
 
     # Query your database for username and password
-    user = User.query.filter_by(email=email, password=password).first()
+    user = User_be.query.filter_by(email=email, password=password).first()
 
     if user is None:
         # The user was not found on the database
@@ -64,14 +153,14 @@ def create_token():
     
     # Create a new token with the user id inside
     access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
-    return jsonify({ "token": access_token, "user_id": user.id })
+    return jsonify({ "token": access_token, "userbe_id": user.id, email: user.email }), 200
 
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
     # Access the identity of the current user with get_jwt_identity
     current_user_id = get_jwt_identity()
-    user = User.query.filter_by(id = current_user_id).first()
+    user = User_be.query.filter_by(id = current_user_id).first()
     
     return jsonify({"id": user.id, "username": user.email }), 200
     # return jsonify({"id": "cualquier cosa" }), 200
@@ -81,7 +170,7 @@ def protected():
 def create_product():
     try:
         current_user_id = get_jwt_identity()
-        user = User.query.filter_by(id=current_user_id).first()
+        user = User_be.query.filter_by(id=current_user_id).first()
 
         data = request.get_json()
 
@@ -163,7 +252,7 @@ def signupchat():
 def get_user_products():
     try:
         current_user_email = get_jwt_identity()
-        user = User.query.filter_by(email=current_user_email).first()
+        user = User_be.query.filter_by(email=current_user_email).first()
 
         if not user:
             return jsonify({"message": "User not found"}), 404
