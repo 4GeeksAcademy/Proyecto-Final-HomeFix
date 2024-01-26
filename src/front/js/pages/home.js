@@ -14,7 +14,7 @@ const Home = () => {
   const { store, actions } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -26,7 +26,7 @@ const Home = () => {
         setLoading(false);
       }
     };
-  
+
     fetchProducts();
   }, []);
 
@@ -42,15 +42,31 @@ const Home = () => {
     slidesToScroll: 1
   };
 
-  const contactar =  () => {
+  const goToProfessionalProfile = async (professionalId) => {
+    console.log("professionalId:", professionalId);
+    try {
+      const url = `${process.env.BACKEND_URL}/api/user/${professionalId}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (response.ok) {
+        navigate("/perfil-profesional", { state: { professional: data } });
+      } else {
+        console.error("Error fetching professional profile:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching professional profile:", error);
+    }
+  };
+
+  const contactar = () => {
 
     navigate("/profile/chat");
-}
+  }
 
   return (
-    
+
     <div className='w-[90%] m-auto z-[0]' style={{ backgroundColor: 'white' }}>
-      
+
       <h1 className='m-5 text-center'>Últimas publicaciones</h1>
       <div className='card-container w-full flex justify-between flex-wrap gap-y-16 z-[0]'>
         {store.products.map((product) => (
@@ -75,21 +91,15 @@ const Home = () => {
                 <span className='text-sm'>{product.description}</span>
                 <div className='flex items-center gap-2 mt-1'>
                   <span className='text-sm line opacity-50'>{product.seller.email}</span>
-                  {/* <span className='discount-percent'>A 20km de ti</span> */}
                 </div>
               </div>
               <span className='flex items-center mt-1'>
-                {/* <span>⭐️</span> */}
                 <span className='text-xs ml-2 text-gray-500'>{product.seller.email}</span>
               </span>
 
               <div className='mt-3 flex gap-2'>
-                 <button className='button-primary bg-[#2A2A2A]' onClick={contactar}>Contactar</button>
-
-                {/* <button className='button-icon'>
-                  <span className='opacity-50'>♥️</span>
-                </button> */}
-                <button className='button-icon'>
+                <button className='button-primary bg-[#2A2A2A]' onClick={contactar}>Contactar</button>
+                <button className='button-icon' onClick={() => goToProfessionalProfile(product.seller.id)}>
                   <span className='opacity-50'>🔍</span>
                 </button>
               </div>
@@ -105,4 +115,3 @@ const Home = () => {
 };
 
 export default Home;
-

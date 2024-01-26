@@ -22,10 +22,6 @@ import { IoMailOutline, IoKeyOutline } from "react-icons/io5";
 import { GoPeople } from "react-icons/go";
 import { BsQuestionCircle } from "react-icons/bs";
 import logo from '@img/logo.png';
-
-
-
-
 import { NavLink, useLocation, useRoutes } from "react-router-dom";
 
 const Sidebar = () => {
@@ -164,7 +160,7 @@ const Sidebar = () => {
                 Inicio
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to={"/authentication"} className="link">
                 <HiOutlineCollection size={23} className="min-w-max" />
                 Publicaciones
@@ -175,7 +171,7 @@ const Sidebar = () => {
                 <GrUserWorker size={23} className="min-w-max" />
                 Profesionales
               </NavLink>
-            </li>
+            </li> */}
             <li className='border-y py-3 border-slate-300'>
               {open && (
                 <small className="pl-3 text-slate-500 inline-block mb-2">

@@ -1,0 +1,15 @@
+.image-container {
+    width: 150px; /* Tamaño del círculo */
+    height: 150px; /* Tamaño del círculo */
+    border-radius: 50%; /* Esto crea la forma circular */
+    overflow: hidden; /* Esto asegura que la imagen no se salga del círculo */
+    display: flex; /* Centra la imagen dentro del contenedor */
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0; /* Color de fondo por si la imagen no cubre todo el espacio */
+  }
+  
+  .profile-image {
+    width: 100%; /* Esto asegura que la imagen cubra el ancho del contenedor */
+    height: auto; /* Esto mantiene la proporción de la imagen */
+  }
