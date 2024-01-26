@@ -3,6 +3,7 @@ import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 import PerfilComponent from '../component/PerfilComponent';
 import ChatComponent from '../component/ChatComponent';
 import NuevaPublicacion from '../component/NuevaPublicacion';
+import Cartera from '../component/cartera';
 import PublicacionesComponent from '../component/PublicacionesComponent';
 import ProfileContent from '../component/profilecontent';
 
@@ -20,9 +21,8 @@ const Profile = () => {
       setActiveTab('publicaciones');
     } else if (path.includes('nuevapublicacion')) {
       setActiveTab('nuevapublicacion');
-    } else if (path.includes('perfil-profesional')) {
-      setActiveTab('perfil-profesional');
-    } else {
+    }  
+    else {
       setActiveTab('perfil');
     }
   }, [location]);
@@ -39,8 +39,10 @@ const Profile = () => {
                 className={`px-4 py-2 rounded focus:outline-none ${activeTab === 'perfil' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
           Perfil
         </button>
-        <button onClick={() => handleTabClick('chat')}
-                className={`px-4 py-2 rounded focus:outline-none ${activeTab === 'chat' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}>
+        <button
+          onClick={() => handleTabClick('chat')}
+          className={`px-4 py-2 rounded focus:outline-none ${activeTab === 'chat' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
           Chat
         </button>
         <button onClick={() => handleTabClick('publicaciones')}
@@ -58,13 +60,10 @@ const Profile = () => {
       </div>
 
       <div className="mt-4">
-        <Routes>
-          <Route path="/" element={<PerfilComponent />} />
-          <Route path="chat" element={<ChatComponent />} />
-          <Route path="publicaciones" element={<PublicacionesComponent />} />
-          <Route path="nuevapublicacion" element={<NuevaPublicacion />} />
-          {/* <Route path="perfil-profesional" element={<ProfileContent />} /> */}
-        </Routes>
+        {activeTab === 'perfil' && <PerfilComponent />}
+        {activeTab === 'chat' && <ChatComponent />}
+        {activeTab === 'publicaciones' && <PublicacionesComponent />}
+        {activeTab === 'nuevapublicacion' && <NuevaPublicacion />}
       </div>
     </div>
   );
