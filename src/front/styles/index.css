@@ -1,0 +1,8 @@
+/* 
+    General Styles used on every website (Don't Repeat Yourself)
+*/
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7Q0FFQzs7QUFFRCwwQkFBMEI7QUFDMUIsZ0NBQWdDO0FBQ2hDLCtCQUErQiIsImZpbGUiOiJpbmRleC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIvKiBcbiAgICBHZW5lcmFsIFN0eWxlcyB1c2VkIG9uIGV2ZXJ5IHdlYnNpdGUgKERvbid0IFJlcGVhdCBZb3Vyc2VsZilcbiovXG5cbkBpbXBvcnQgJ3RhaWx3aW5kY3NzL2Jhc2UnO1xuQGltcG9ydCAndGFpbHdpbmRjc3MvY29tcG9uZW50cyc7XG5AaW1wb3J0ICd0YWlsd2luZGNzcy91dGlsaXRpZXMnO1xuXG4iXX0= */
