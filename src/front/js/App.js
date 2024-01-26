@@ -13,6 +13,7 @@ import Politicaprivacidad from './component/politicaprivacidad';
 import Contactanos from './component/contactanos';
 import About from './component/about';
 import Questions from "./component/questions.js";
+import ProfileContent from '../js/component/profilecontent.js';
 
 import CreateProduct from './component/createproduct';
 import NuevaPublicacion from './component/NuevaPublicacion';
@@ -56,6 +57,7 @@ const App = () => {
         )}
 
         <Route path="/analytics/:aID" element={<Analytics />} />
+        <Route path="/perfil-profesional" element={<ProfileContent />} />
       </Routes>
     </RootLayout>
   );

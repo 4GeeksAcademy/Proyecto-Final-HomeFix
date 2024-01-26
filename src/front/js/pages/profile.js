@@ -63,7 +63,7 @@ const Profile = () => {
           <Route path="chat" element={<ChatComponent />} />
           <Route path="publicaciones" element={<PublicacionesComponent />} />
           <Route path="nuevapublicacion" element={<NuevaPublicacion />} />
-          <Route path="perfil-profesional" element={<ProfileContent />} />
+          {/* <Route path="perfil-profesional" element={<ProfileContent />} /> */}
         </Routes>
       </div>
     </div>

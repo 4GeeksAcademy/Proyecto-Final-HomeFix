@@ -49,7 +49,7 @@ const Home = () => {
       const response = await fetch(url);
       const data = await response.json();
       if (response.ok) {
-        navigate("/profile/perfil-profesional", { state: { professional: data } });
+        navigate("/perfil-profesional", { state: { professional: data } });
       } else {
         console.error("Error fetching professional profile:", data.message);
       }
