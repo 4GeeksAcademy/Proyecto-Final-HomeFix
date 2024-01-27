@@ -20,7 +20,6 @@ const PoliticaPrivacidad = () => {
           Utilizamos la información recopilada para personalizar tu experiencia,
           mejorar nuestro sitio y proporcionar contenido y publicidad relevantes.
         </p>
-        {/* Agrega más párrafos de texto según sea necesario */}
         <p className="text-gray-500">Última actualización: [Enero 2024]</p>
       </div>
     </div>
