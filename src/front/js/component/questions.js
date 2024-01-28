@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionHeader,
@@ -6,9 +6,13 @@ import {
 } from "@material-tailwind/react";
  
 export function Questions() {
-  const [open, setOpen] = React.useState(1);
+  const [open, setOpen] = useState(0);
  
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
+
+  useEffect(() => {
+    setOpen(0); 
+  }, []);
  
   return (
     <div className="bg-blue-gray-50/50 shadow-lg" style={{ borderRadius: "10px", padding: "20px", maxWidth: "800px", margin: "auto", marginTop: "50px" }}>
@@ -16,31 +20,25 @@ export function Questions() {
       <Accordion open={open === 1}>
         <AccordionHeader onClick={() => handleOpen(1)}>¿Cómo puedo solicitar un servicio?</AccordionHeader>
         <AccordionBody>
-        Puedes solicitar un servicio seleccionando la categoría y el profesional deseado, luego sigue los pasos para completar la solicitud y realizar el pago.
+          Puedes solicitar un servicio seleccionando la categoría y el profesional deseado, luego sigue los pasos para completar la solicitud y realizar el pago.
         </AccordionBody>
       </Accordion>
       <Accordion open={open === 2}>
-        <AccordionHeader onClick={() => handleOpen(2)}>
-        ¿Cómo puedo pagar por los servicios?
-        </AccordionHeader>
+        <AccordionHeader onClick={() => handleOpen(2)}>¿Cómo puedo pagar por los servicios?</AccordionHeader>
         <AccordionBody>
-        Puedes realizar el pago con tarjeta de crédito o débito para confirmar tu solicitud de servicio.
+          Puedes realizar el pago con tarjeta de crédito o débito para confirmar tu solicitud de servicio.
         </AccordionBody>
       </Accordion>
       <Accordion open={open === 3}>
-        <AccordionHeader onClick={() => handleOpen(3)}>
-        ¿Cómo califico a un profesional?
-        </AccordionHeader>
+        <AccordionHeader onClick={() => handleOpen(3)}>¿Cómo califico a un profesional?</AccordionHeader>
         <AccordionBody>
-        Después de completar el servicio, puedes calificar al profesional y dejar comentarios sobre tu experiencia. Tu retroalimentación es valiosa para nosotros y otros usuarios.
+          Después de completar el servicio, puedes calificar al profesional y dejar comentarios sobre tu experiencia. Tu retroalimentación es valiosa para nosotros y otros usuarios.
         </AccordionBody>
       </Accordion>
-      <Accordion open={open === 3}>
-        <AccordionHeader onClick={() => handleOpen(4)}>
-        ¿Cómo puedo cambiar la ciudad para ver profesionales en otra área?
-        </AccordionHeader>
+      <Accordion open={open === 4}>
+        <AccordionHeader onClick={() => handleOpen(4)}>¿Cómo puedo cambiar la ciudad para ver profesionales en otra área?</AccordionHeader>
         <AccordionBody>
-        Puedes cambiar la ciudad en la configuración de tu perfil o en la página de inicio. Esto te permitirá ver profesionales disponibles en diferentes áreas geográficas.
+          Puedes cambiar la ciudad en la configuración de tu perfil o en la página de inicio. Esto te permitirá ver profesionales disponibles en diferentes áreas geográficas.
         </AccordionBody>
       </Accordion>
     </div>
