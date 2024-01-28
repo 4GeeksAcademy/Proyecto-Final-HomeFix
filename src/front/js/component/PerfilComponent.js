@@ -3,6 +3,7 @@ import React from "react";
 import profilePicture from "../../img/profile-picture.jpg";
 
 const PerfilComponent = () => {
+  console.log("PerfilComponent component is rendered");
   const handleChangePhoto = () => {
     // Agrega aquí la lógica para cambiar la foto, por ejemplo, abrir un diálogo para seleccionar una nueva foto.
     console.log("Cambiar foto");

@@ -2,9 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../store/appContext';
 import { cloudinaryConfig } from '../config';
 import { Image, Transformation } from 'cloudinary-react';
-import { AdvancedImage } from '@cloudinary/react';
-import { sepia } from "@cloudinary/url-gen/actions/effect";
-
 
 const NuevaPublicacion = () => {
 
@@ -12,6 +9,7 @@ const NuevaPublicacion = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    category: '',
     price: '',
     imageFiles: [],
     province: '',
@@ -30,7 +28,22 @@ const NuevaPublicacion = () => {
     fetchProvinces();
   }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        console.log("Cargando categorias...");
+        await actions.getCategories();
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
 
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
+    console.log("Categorías actualizadas en el componente:", store.categories);
+  }, [store.categories]);
 
 
   const handleInputChange = e => {
@@ -38,16 +51,15 @@ const NuevaPublicacion = () => {
   };
 
   const handleImageUpload = async e => {
-    console.log('Cloudinary Config:', cloudinaryConfig); // Asegúrate de que la configuración sea correcta
+    console.log('Cloudinary Config:', cloudinaryConfig);
 
     const files = e.target.files;
 
-    // Realiza la carga de cada imagen y actualiza el estado con las URLs
     const uploadedImages = await Promise.all(
       Array.from(files).map(async file => {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'ml_default'); // Reemplaza con tu upload preset de Cloudinary
+        formData.append('upload_preset', 'ml_default');
 
         try {
           const response = await fetch('https://api.cloudinary.com/v1_1/dpxcrz59c/image/upload', {
@@ -66,21 +78,24 @@ const NuevaPublicacion = () => {
       })
     );
 
-    // Actualiza el estado con las URLs de las imágenes cargadas
     setFormData({ ...formData, imageFiles: uploadedImages });
     console.log('Image URLs:', uploadedImages.filter(url => url !== null));
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    const { name, description, price, imageFiles } = formData;
+    console.log("Form data on submit:", formData);
 
-    // Llama a la acción para crear una nueva publicación con las URLs de las imágenes
-    actions.createProduct(name, description, parseFloat(price), imageFiles);
+    formData.price = parseFloat(formData.price);
 
-    // Limpia el formulario después de la creación
-    setFormData({ name: '', description: '', price: '', imageFiles: [] });
+    const { name, description, category, price, imageFiles, province } = formData;
+
+    actions.createProduct(name, description, category, parseFloat(price), imageFiles, province);
+
+    setFormData({ name: '', description: '', category: '', price: '', imageFiles: [], province: '' });
   };
+
+  console.log("Categorías en el componente:", store.categories);
 
   return (
     <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded shadow-md">
@@ -112,6 +127,25 @@ const NuevaPublicacion = () => {
             />
           </label>
         </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Categoría:
+            <select
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              name="category"
+              value={formData.category}
+              onChange={handleInputChange}
+              required
+            >
+              <option value="" disabled>Seleccione una categoría</option>
+              {Array.isArray(store.categories) && store.categories.map((categoryName, index) => (
+                <option key={index} value={categoryName}>{categoryName}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Precio:
@@ -125,6 +159,7 @@ const NuevaPublicacion = () => {
             />
           </label>
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Provincia:
@@ -139,11 +174,10 @@ const NuevaPublicacion = () => {
               {Array.isArray(store.provinces) && store.provinces.map((province) => (
                 <option key={province.id} value={province.name}>{province.name}</option>
               ))}
-
-             
             </select>
           </label>
         </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
             Subir Imágenes:

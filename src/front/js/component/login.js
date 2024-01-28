@@ -12,10 +12,14 @@ const Login = () => {
     const navigate = useNavigate();
 
     const login = async () => {
-        await actions.setToken(email, password);
-        setEmail('');
-        setPassword('');
-        navigate("/home");
+        try {
+            await actions.setToken(email, password);
+            setEmail('');
+            setPassword('');
+            navigate("/home");
+        } catch {
+            console.log('Credenciales incorrectas');
+        }
     }
 
     return (<>

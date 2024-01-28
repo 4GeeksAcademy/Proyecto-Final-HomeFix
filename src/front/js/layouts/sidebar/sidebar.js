@@ -1,48 +1,33 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import { useRef } from "react";
-import SubMenu from "./SubMenu";
 import { motion } from "framer-motion";
-import NavBar from "./navbar";
-// * React icons
-import { IoIosArrowBack } from "react-icons/io";
-import { SlSettings } from "react-icons/sl";
-import { AiOutlineAppstore } from "react-icons/ai";
-import { BsPerson } from "react-icons/bs";
-import { HiOutlineDatabase } from "react-icons/hi";
 import { TbReportAnalytics } from "react-icons/tb";
 import { RiBuilding3Line } from "react-icons/ri";
 import { useMediaQuery } from "react-responsive";
 import { MdMenu } from "react-icons/md";
-import { HiMenuAlt3, HiOutlineCollection } from "react-icons/hi";
-import { GrUserWorker } from "react-icons/gr";
-import { AiOutlineHeart, AiOutlineMessage } from "react-icons/ai";
+import { HiMenuAlt3 } from "react-icons/hi";
+import { AiOutlineMessage } from "react-icons/ai";
 import { TfiHome } from "react-icons/tfi";
 import { IoMailOutline, IoKeyOutline } from "react-icons/io5";
 import { GoPeople } from "react-icons/go";
 import { BsQuestionCircle } from "react-icons/bs";
 import logo from '@img/logo.png';
+import injectContext, { Context } from "../../store/appContext";
 
-
-
-
-import { NavLink, useLocation, useRoutes } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
+
+  const { store } = React.useContext(Context);
+  const token = localStorage.getItem('token');
+
   let isTabletMid = useMediaQuery({ query: "(max-width: 768px)" });
   const [open, setOpen] = useState(isTabletMid ? false : true);
   const sidebarRef = useRef();
   const { pathname } = useLocation();
 
   const [isLoggedIn, setLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setLoggedIn(false);
-  };
 
   useEffect(() => {
     if (isTabletMid) {
@@ -103,7 +88,7 @@ const Sidebar = () => {
   ];
 
   return (
-    
+
     <div>
 
       <div
@@ -111,7 +96,7 @@ const Sidebar = () => {
         className={`md:hidden fixed inset-0 max-h-screen z-[998] bg-black/50 ${open ? "block" : "hidden"
           } `}
       ></div>
-      
+
       <motion.div
         ref={sidebarRef}
         variants={Nav_animation}
@@ -176,25 +161,28 @@ const Sidebar = () => {
                 Profesionales
               </NavLink>
             </li> */}
-            <li className='border-y py-3 border-slate-300'>
-              {open && (
-                <small className="pl-3 text-slate-500 inline-block mb-2">
-                  Mi Perfil
-                </small>
-              )}
-            </li>
-            <li>
-              <NavLink to={"/profile/publicaciones"} className="link">
-                <TbReportAnalytics size={23} className="min-w-max" />
-                Mis datos
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={"/profile/chat"} className="link">
-                <IoMailOutline size={23} className="min-w-max" />
-                Buzón
-              </NavLink>
-            </li>
+            {token && (
+              <div>
+                <li className='border-y py-3 border-slate-300'>
+                  {open && (
+                    <small className="pl-3 text-slate-500 inline-block mb-2">
+                      Mi Perfil
+                    </small>
+                  )}
+                </li>
+                <li>
+                  <NavLink to={"/profile/publicaciones"} className="link">
+                    <TbReportAnalytics size={23} className="min-w-max" />
+                    Mis datos
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={"/profile/chat"} className="link">
+                    <IoMailOutline size={23} className="min-w-max" />
+                    Buzón
+                  </NavLink>
+                </li>
+              </div>)}
             <li className='border-b py-3 border-slate-300'>
               {open && (
                 <small className="pl-3 text-slate-500 inline-block mb-2">

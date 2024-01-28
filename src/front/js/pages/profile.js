@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Routes, Route } from 'react-router-dom';
 import PerfilComponent from '../component/PerfilComponent';
 import ChatComponent from '../component/ChatComponent';
 import NuevaPublicacion from '../component/NuevaPublicacion';
 import Cartera from '../component/cartera';
-import PublicacionesComponent from '../component/PublicacionesComponent';
+
+import ProfileContent from '../component/profilecontent'
 
 const Profile = () => {
   const location = useLocation();
@@ -19,19 +20,15 @@ const Profile = () => {
       setActiveTab('publicaciones');
     } else if (path.includes('nuevapublicacion')) {
       setActiveTab('nuevapublicacion');
-    }
-    else if (path.includes('cartera')) {
-      setActiveTab('cartera');
-    }
-    else {
+    } else if (path.includes('perfil-profesional')) {
+      setActiveTab('perfil-profesional');
+    } else {
       setActiveTab('perfil');
     }
   }, [location]);
 
   const handleTabClick = (tab) => {
-    // Actualiza la ruta al cambiar de pestaña
     navigate(`/profile/${tab.toLowerCase()}`);
-
     setActiveTab(tab);
   };
 
@@ -71,11 +68,12 @@ const Profile = () => {
       </div>
 
       <div className="mt-4">
-        {activeTab === 'perfil' && <PerfilComponent />}
-        {activeTab === 'cartera' && <Cartera />}
-        {activeTab === 'chat' && <ChatComponent />}
-        {activeTab === 'publicaciones' && <PublicacionesComponent />}
-        {activeTab === 'nuevapublicacion' && <NuevaPublicacion />}
+      <Routes>
+          <Route path="/" element={<ProfileContent />} />
+          <Route path="chat" element={<ChatComponent />} />
+
+          <Route path="nuevapublicacion" element={<NuevaPublicacion />} />
+        </Routes>
       </div>
     </div>
   );

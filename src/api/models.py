@@ -40,6 +40,9 @@ class Product(db.Model):
     province = db.relationship('Province', back_populates='products')
     images_urls = db.Column(db.String(2000))
 
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category = db.relationship('Category', backref='products')
+
     def serialize(self):
         images_urls = json.loads(self.images_urls) if self.images_urls else []
 
@@ -78,3 +81,11 @@ class Province(db.Model):
             'name': self.name,
             'products': [product.serialize() for product in self.products]
         }
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+
+    def __repr__(self):
+        return f'<Category {self.name}>'
+    

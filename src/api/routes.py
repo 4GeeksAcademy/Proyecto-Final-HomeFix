@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User_be, Product, Province
+from api.models import db, User_be, Product, Province, Category
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
@@ -277,17 +277,25 @@ def create_product():
         description = data.get("description")
         price = data.get("price")
         images_urls = json.dumps(data.get("images_urls"))
+
         province_name = data.get("province")
+        province = Province.query.filter_by(name=province_name).first()
+        if not province:
+            return jsonify({"message": "Province not found"}), 400
+
+        category_name = data.get("category")
+        category = Category.query.filter_by(name=category_name).first()
+        if not category:
+            return jsonify({"message": "Category not found"}), 400
         
         new_product = Product(
             name=name,
             description=description,
             price=price,
-            seller=user, 
+            seller=user,
             images_urls=images_urls,
-            province=province_name
-
-
+            province=province,
+            category=category 
         )
 
         db.session.add(new_product)
@@ -297,6 +305,7 @@ def create_product():
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
 
 @api.route("/get_all_products", methods=["GET"])
 def get_all_products():
@@ -364,3 +373,31 @@ def get_user_products():
 
     except Exception as e:
         return jsonify({"message": str(e)}), 500
+
+@api.route("/user/<int:user_id>", methods=["GET"])
+def get_user_profile(user_id):
+    user = User_be.query.get(user_id)
+    if user is None:
+        return jsonify({"message": "User not found"}), 404
+
+    return jsonify(user.serialize()), 200
+
+@api.route('/categories', methods=['GET'])
+def get_categories():
+    categories = Category.query.all()
+    return jsonify([category.name for category in categories]), 200
+
+@api.route("/filtered_products", methods=["GET"])
+def get_filtered_products():
+    category_name = request.args.get('category_name')
+
+    if not category_name:
+        return jsonify({"message": "Category name is required"}), 400
+
+    category = Category.query.filter_by(name=category_name).first()
+    if not category:
+        return jsonify({"message": "Category not found"}), 404
+
+    products = Product.query.filter_by(category=category).all()
+    return jsonify([product.serialize() for product in products]), 200
+

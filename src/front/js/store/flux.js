@@ -1,5 +1,3 @@
-
-
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -30,8 +28,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			productsbyuser: [],
 			email: "",
 			perfildone: false,
-
-		}, // Add comma here
+			filteredProducts: [],
+			categories: [], // Add comma here
+		},
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
@@ -81,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					setStore({ ...store, user_id: data.user_id });
 					localStorage.setItem('perfildone', data.perfildone);
-					
+
 
 				} catch (error) {
 					console.error("Error during signup:", error);
@@ -187,12 +186,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 					},
 					body: JSON.stringify({ email, password })
 				});
-				const data = await response.json();
-				setStore({ ...store, token: data.token, email: data.email, userbe_id: data.userbe_id});
-				localStorage.setItem('token', data.token, 'email', data.email);
+
+				if (response.ok) {
+					const data = await response.json();
+					setStore({ ...store, token: data.token, email: data.email, userbe_id: data.userbe_id });
+					localStorage.setItem('token', data.token);
+					localStorage.setItem('email', data.email);
+				} else {
+					throw new Error("Credenciales incorrectas");
+				}
 			},
-
-
 
 			clearToken: () => {
 				const store = getStore();
@@ -202,7 +205,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('userbe_id', '');
 				localStorage.setItem('username', '');
 				localStorage.setItem('mangoid', '');
-				
+
 			},
 
 			signup: async (email, password) => {
@@ -227,7 +230,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error during signup:", error);
 				}
 			},
-			createProduct: async (name, description, price, images_urls, province) => {
+			createProduct: async (name, description, category, price, images_urls, province) => {
 				const store = getStore();
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}/api/products`, {
@@ -236,7 +239,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Content-Type': 'application/json',
 							'Authorization': `Bearer ${localStorage.token}`
 						},
-						body: JSON.stringify({ name, description, price, images_urls, province })
+						body: JSON.stringify({ name, description, category, price, images_urls, province })
 					});
 					const data = await response.json();
 
@@ -272,50 +275,34 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error loading provinces from backend:", error);
 				}
 			},
-			// getUserProducts: async () => {
-			// 	const store = getStore();
-			// 	try {
-			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/productsbyuser`);
-			// 		const data = await response.json();
-
-			// 		setStore({ ...store, productsbyuser: data });
-
-			// 	} catch (error) {
-			// 		console.error("Error loading provinces from backend:", error);
-			// 	}
-			// },
-
-
-			// getUserProducts: async (email, token) => {
-			// 	const store = getStore();
-
-			// 	try {
-			// 		const url = `${process.env.BACKEND_URL}/api/productsbyuser?email=${encodeURIComponent(email)}`;
-
-			// 		const response = await fetch(url, {
-			// 			method: 'GET',
-			// 			headers: {
-			// 				'Content-Type': 'application/json',
-			// 				'Authorization': `Bearer ${token}`
-			// 			}
-			// 		});
-
-			// 		const data = await response.json();
-
-			// 		// Convierte data a una cadena JSON antes de almacenarla en localStorage
-			// 		localStorage.setItem('productsbyuser', JSON.stringify(data));
-
-			// 		setStore({ ...store, productsbyuser: data });
-			// 	} catch (error) {
-			// 		console.error("Error loading user products from backend:", error);
-			// 	}
-			// },
-
-
-
-
-
+			getProductsByCategory: async (categoryName) => {
+				const store = getStore();
+				try {
+					const encodedCategoryName = encodeURIComponent(categoryName);
+					const response = await fetch(`${process.env.BACKEND_URL}/api/filtered_products?category_name=${encodedCategoryName}`);
+					const data = await response.json();
+					setStore({ ...store, filteredProducts: data });
+					console.log("filteredProducts:", data);
+				} catch (error) {
+					console.error("Error loading filtered products:", error);
+				}
+			},
+			getCategories: async () => {
+				const store = getStore(); // Obtener el estado actual
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}/api/categories`);
+					if (response.ok) {
+						const categories = await response.json();
+						console.log("Categorías obtenidas del flux:", categories);
+						setStore({ ...store, categories: categories }); // Actualizar el estado
+					} else {
+						console.error("Error fetching categories:", response.statusText);
+					}
+				} catch (error) {
+					console.error("Error fetching categories:", error);
+				}
+			}
 		}
-	}; // Add closing parenthesis here
+	};
 }
 export default getState;

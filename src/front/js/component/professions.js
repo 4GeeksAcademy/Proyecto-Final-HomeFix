@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context } from '../store/appContext';
 import "../styles/professions.css";
+import { useNavigate } from 'react-router-dom';
 
 import AlbanileriaICO from '../../img/icono_albanileria.png';
 import CarpineriaICO from '../../img/icono_carpinteria.png';
@@ -16,6 +18,9 @@ import RefrigeracionICO from '../../img/icono_refrigeracion.png';
 
 const Professions = () => {
 
+    const { actions } = useContext(Context);
+    const navigate = useNavigate();
+
     const categories = [
         { name: 'Albañilería', image: AlbanileriaICO },
         { name: 'Carpintería', image: CarpineriaICO },
@@ -31,14 +36,24 @@ const Professions = () => {
         { name: 'Refrigeración', image: RefrigeracionICO },
     ];
 
+    const handleCategoryClick = (categoryName) => {
+        navigate(`/category/${categoryName}`);
+    };
+
     return (
         <>
             <div className='w-full mx-auto my-5 flex flex-col justify-center bg-white border rounded-[3%]'>
                 <h1 className='mb-3 text-center'>Categorías</h1>
                 <div className='categories-container flex flex-wrap justify-center gap-4'>
                     {categories.map((category, index) => (
-                        <div key={index} className='category-item flex flex-col items-center' style={{ width: '16.66%', padding: '10px' }}>
-                            <img src={category.image} alt={category.name}
+                        <div
+                            key={index}
+                            className='category-item flex flex-col items-center'
+                            style={{ width: '16.66%', padding: '10px', cursor: 'pointer' }}
+                            onClick={() => handleCategoryClick(category.name)}> {/* Cambia a category.name */}
+                            <img
+                                src={category.image}
+                                alt={category.name}
                                 style={{
                                     width: '100%',
                                     height: '100%',

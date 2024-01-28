@@ -1,6 +1,6 @@
 
 import click
-from api.models import db, User_be, Province
+from api.models import db, User_be, Province, Category
 
 
 """
@@ -57,5 +57,19 @@ def setup_commands(app):
         db.session.commit()
         print("All provinces created")
 
+    @app.cli.command("create-categories")
+    def create_categories():
+
+        categories = [
+            "Albañileria", "Carpinteria", "Cerrajeria", "Electricista",
+            "Fontaneria", "Jardineria", "Limpieza", "Manitas",
+            "Mudanzas", "Pintura", "Reformas", "Refrigeracion"
+        ]
+
+        for category_name in categories:
+            category = Category(name=category_name)
+            db.session.add(category)
+
+        db.session.commit()
 
     
