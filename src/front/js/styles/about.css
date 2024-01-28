@@ -1,5 +1,4 @@
 .about-container {
-    background: linear-gradient(-45deg, white, #e6ae81);
     padding: 50px;
 }
 
@@ -13,8 +12,7 @@
   }
 
   .tooltip {
-    max-width: 200px; /* Ajusta el ancho máximo del tooltip según sea necesario */
-    padding: 8px; /* Ajusta el padding interno según sea necesario */
+    max-width: 170px; 
   }
   
   .circular-image {
