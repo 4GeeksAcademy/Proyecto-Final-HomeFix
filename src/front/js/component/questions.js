@@ -19,7 +19,7 @@ const Questions = () => {
     },
     {
       pregunta: "¿Cómo puedo pagar por los servicios?",
-      respuesta: "Ofrecemos una pasarela de pago segura. Puedes realizar el pago con tarjeta de crédito o débito para confirmar tu solicitud de servicio.",
+      respuesta: "Puedes realizar el pago con tarjeta de crédito o débito para confirmar tu solicitud de servicio.",
     },
     {
       pregunta: "¿Cómo califico a un profesional?",
@@ -32,7 +32,7 @@ const Questions = () => {
   ];
 
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto p-20">
       <h2 className="text-2xl font-bold mb-4 text-center">Preguntas Frecuentes</h2>
       <div className="space-y-8">
         {questions.map((question, index) => (

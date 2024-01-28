@@ -4,7 +4,7 @@ import "../styles/politicaprivacidad.css";
 const PoliticaPrivacidad = () => {
   return (
     <div className="marco-container flex justify-center items-center h-screen">
-      <div className="max-w-lg w-full bg-white shadow-lg rounded-lg p-10">
+      <div className="max-w-2xl w-full bg-white shadow-lg rounded-lg p-10">
         <h2 className="text-2xl font-bold mb-4 text-center">Política de Privacidad</h2>
         <p className="text-gray-600 mb-4 text-justify">
           Tu privacidad es importante para nosotros. Esta política de privacidad
