@@ -18,40 +18,50 @@ import { authorsTableData, projectsTableData } from "../../data";
 
 export function Questions() {
   const [open, setOpen] = React.useState(0);
- 
+
   const handleOpen = (value) => setOpen(open === value ? 0 : value);
- 
+
   return (
     <div className="bg-blue-gray-50/50 shadow-lg" style={{ borderRadius: "10px", padding: "20px", maxWidth: "800px", margin: "auto", marginTop: "50px" }}>
-      <h1 style={{ textAlign: "center" }}>Preguntas Frecuentes</h1>
+      <h1 style={{ textAlign: "center", marginBottom: "20px", marginTop: "10px",fontSize: "24px", fontWeight: "bold" }}>Preguntas Frecuentes</h1>
       <Accordion open={open === 1}>
-        <AccordionHeader onClick={() => handleOpen(1)}>¿Cómo puedo solicitar un servicio?</AccordionHeader>
+        <AccordionHeader onClick={() => handleOpen(1)}>
+          ¿Cómo encuentro un profesional en la aplicación?
+        </AccordionHeader>
         <AccordionBody>
-        Puedes solicitar un servicio seleccionando la categoría y el profesional deseado, luego sigue los pasos para completar la solicitud y realizar el pago.
+          Puedes buscar profesionales por categoría de servicio. Además, puedes explorar los perfiles de los profesionales disponibles en tu área.
         </AccordionBody>
       </Accordion>
       <Accordion open={open === 2}>
         <AccordionHeader onClick={() => handleOpen(2)}>
-        ¿Cómo puedo pagar por los servicios?
+          ¿Puedo ver información detallada sobre los profesionales antes de contratarlos?
         </AccordionHeader>
         <AccordionBody>
-        Puedes realizar el pago con tarjeta de crédito o débito para confirmar tu solicitud de servicio.
+          Sí, cada perfil de profesional contiene detalles como su experiencia, áreas de especialización, servicios ofrecidos y disponibilidad. Esta información te ayuda a tomar una decisión informada sobre quién contratar.
         </AccordionBody>
       </Accordion>
       <Accordion open={open === 3}>
         <AccordionHeader onClick={() => handleOpen(3)}>
-        ¿Cómo califico a un profesional?
+          ¿Cómo solicito los servicios de un profesional?
         </AccordionHeader>
         <AccordionBody>
-        Después de completar el servicio, puedes calificar al profesional y dejar comentarios sobre tu experiencia. Tu retroalimentación es valiosa para nosotros y otros usuarios.
+          Una vez que encuentres al profesional adecuado, simplemente selecciona su perfil y sigue las instrucciones para solicitar el servicio deseado. El profesional será notificado y se comunicará contigo para coordinar los detalles.
         </AccordionBody>
       </Accordion>
       <Accordion open={open === 4}>
         <AccordionHeader onClick={() => handleOpen(4)}>
-        ¿Cómo puedo cambiar la ciudad para ver profesionales en otra área?
+          ¿Puedo comunicarme directamente con el profesional antes de contratarlo?
         </AccordionHeader>
         <AccordionBody>
-        Puedes cambiar la ciudad en la configuración de tu perfil o en la página de inicio. Esto te permitirá ver profesionales disponibles en diferentes áreas geográficas.
+          Sí, la aplicación proporciona un sistema de mensajería integrado que te permite comunicarte directamente con los profesionales. Puedes hacer preguntas adicionales o discutir los detalles del servicio antes de comprometerte.
+        </AccordionBody>
+      </Accordion>
+      <Accordion open={open === 5}>
+        <AccordionHeader onClick={() => handleOpen(5)}>
+          ¿Qué debo hacer si tengo algún problema con el servicio recibido?
+        </AccordionHeader>
+        <AccordionBody>
+          Si tienes algún problema con el servicio, te recomendamos que te comuniques con nuestro equipo de soporte al cliente. Estamos aquí para ayudarte a resolver cualquier problema y garantizar tu satisfacción con la experiencia de la aplicación.
         </AccordionBody>
       </Accordion>
     </div>

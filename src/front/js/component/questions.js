@@ -20,7 +20,7 @@ const Questions = () => {
       question: "¿Cómo puedo cambiar la ciudad para ver profesionales en otra área?",
       answer: "Puedes cambiar la ciudad en la configuración de tu perfil o en la página de inicio. Esto te permitirá ver profesionales disponibles en diferentes áreas geográficas.",
     },
-    // Si queremos agregamos mas preguntas y respuestas
+   
   ];
 
   return (
