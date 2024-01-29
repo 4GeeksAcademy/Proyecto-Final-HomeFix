@@ -1,0 +1,26 @@
+.lobby {
+    max-width: 1000px;
+    height: 300px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 30px;
+}
+
+.carousel-root {
+    max-width: 100%;
+    height: 300px;
+    text-align: center;
+}
+
+.carousel-root img {
+    max-width: 100%;
+    padding: 5px;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  
+}
