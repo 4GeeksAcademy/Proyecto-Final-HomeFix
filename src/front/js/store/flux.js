@@ -370,6 +370,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error during signup:", error);
 				}
 			},
+			getProductsByUser: async () => {
+				const store = getStore();
+				const response = await fetch(`https://ubiquitous-space-pancake-jj59jjv66q5vf7xp-3001.app.github.dev/api/productsbyuser/${store.user.email}`, {
+					method: 'GET',
+				})
+				const data = await response.json()
+				setStore({...store, userProducts: data })
+				console.log(store.userProducts)
+			}
 
 
 
