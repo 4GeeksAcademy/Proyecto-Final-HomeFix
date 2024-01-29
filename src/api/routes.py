@@ -15,7 +15,7 @@ import os, requests
 
 api = Blueprint('api', __name__)
 
-CORS(api, origins=["http://localhost:3000", "http://localhost:3001","http://localhost:3001/api/todoist/auth", "http://localhost:3001/api/todoist/callback","http://127.0.0.1:3000/home?"])
+CORS(api, origins=["http://localhost:3000", "http://localhost:3001","http://localhost:3001/api/todoist/auth", "http://localhost:3001/api/todoist/callback","http://127.0.0.1:3000/home?", "https://ubiquitous-space-pancake-jj59jjv66q5vf7xp-3000.app.github.dev/"])
 
 load_dotenv()
 
@@ -369,12 +369,12 @@ def signupchat():
     )
     return response.json()
 
-@api.route("/productsbyuser", methods=["GET"])
-@jwt_required()
-def get_user_products():
+@api.route("/productsbyuser/<string:emailincoming>", methods=["GET"])
+def get_user_products(emailincoming):
+    print(request_Data =request.json)
     try:
-        current_user_email = get_jwt_identity()
-        user = User_be.query.filter_by(email=current_user_email).first()
+       
+        user = User_be.query.filter_by(email=emailincoming).first()
 
         if not user:
             return jsonify({"message": "User not found"}), 404
@@ -382,7 +382,7 @@ def get_user_products():
         products = Product.query.filter_by(user_id=user.id).all()
 
         serialized_products = [product.serialize() for product in products]
-
+        print(serialized_products)
         return jsonify(serialized_products), 200
 
     except Exception as e:

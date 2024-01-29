@@ -26,7 +26,7 @@ import { IoMailOutline, IoKeyOutline } from "react-icons/io5";
 import { GoPeople } from "react-icons/go";
 import { BsQuestionCircle } from "react-icons/bs";
 import logo from '@img/logo.png';
-import { Context } from '/workspaces/ProyectoFinal4Geeks/src/front/js/store/appContext.js';
+import { Context } from '../../store/appContext';
 
 import { NavLink, useLocation, useRoutes } from "react-router-dom";
 
