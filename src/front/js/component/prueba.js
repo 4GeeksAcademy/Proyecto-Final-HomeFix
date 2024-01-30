@@ -1,31 +1,29 @@
-useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        console.log("Fetching products...");
-        await actions.getAllProducts();
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+export function Info() {
+  // ... (resto de tu código)
 
-    fetchProducts();
-  }, []);
+  const { name, description, price, email, images_urls } = store.productDetails;
 
-  
-  useEffect(() => {
-    const fetchProductsID = async () => {
-      try {
-        console.log("Fetching products by user...");
-        await actions.getProductsByUser();
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    }; // Agrega esta llave de cierre
-  
-    fetchProductsID(); // Llama a la función aquí
-  
-  }, []);
+  return (
+    <Card className="mt-6 w-full max-w-4xl mx-auto">
+      <CardHeader color="blue-gray" className="relative h-56 flex justify-center items-center">
+        <Carousel 
+          responsive={responsive}
+          showDots={true}
+          infinite={true}
+          autoPlay={true}
+          autoPlaySpeed={3000}
+        >
+          {images_urls && images_urls.map((url, index) => (
+            <img 
+              key={index} 
+              src={url} 
+              alt={`Imagen del producto ${index + 1}`} 
+              className="object-contain max-h-56" // Cambio aquí
+            />
+          ))}
+        </Carousel>
+      </CardHeader>
+      {/* ... (resto del componente) */}
+    </Card>
+  );
+}
