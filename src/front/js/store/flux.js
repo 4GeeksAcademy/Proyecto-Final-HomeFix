@@ -37,28 +37,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 			datauser: [],
 			categories: [],
 			datauserprofile: [],
+			userProducts: [],
 
 		}, // Add comma here
 		actions: {
-			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
 
 			getMessage: async () => {
 				try {
-					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
 					return data;
 				} catch (error) {
 					console.log("Error loading message from backend", error)
 				}
 			},
 			changeColor: (index, color) => {
-				//get the store
 				const store = getStore();
 
 				//we have to loop the entire demo array to look for the respective index
@@ -68,7 +65,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return elm;
 				});
 
-				//reset the global store
 				setStore({ demo: demo });
 			},
 
@@ -197,14 +193,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 
 					if (!response.ok) {
-						// Si la respuesta no es exitosa, lanzar un error con el mensaje de error
+				
 						const errorData = await response.json();
 						throw new Error(errorData.message || 'Error de inicio de sesión');
 					}
 
-					// Si la respuesta es exitosa, obtener los datos de la respuesta
 					const data = await response.json();
-					// Actualizar el store con los datos recibidos
+
 					setStore({ ...store, token: data.token, email: data.email, userbe_id: data.userbe_id });
 					// Almacenar el token en el almacenamiento local
 					localStorage.setItem('token', data.token);
@@ -222,8 +217,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-
-
 			clearToken: () => {
 				const store = getStore();
 				setStore({ ...store, token: '' });
@@ -232,7 +225,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('userbe_id', '');
 				localStorage.setItem('username', '');
 				localStorage.setItem('mangoid', '');
-
 			},
 
 			signup: async (email, password) => {
@@ -387,54 +379,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} catch (error) {
 					console.error('Error obtaining products for user:', error);
 				}
-			}
-
-
-
-			// getUserProducts: async () => {
-			// 	const store = getStore();
-			// 	try {
-			// 		const response = await fetch(`${process.env.BACKEND_URL}/api/productsbyuser`);
-			// 		const data = await response.json();
-
-			// 		setStore({ ...store, productsbyuser: data });
-
-			// 	} catch (error) {
-			// 		console.error("Error loading provinces from backend:", error);
-			// 	}
-			// },
-
-
-			// getUserProducts: async (email, token) => {
-			// 	const store = getStore();
-
-			// 	try {
-			// 		const url = `${process.env.BACKEND_URL}/api/productsbyuser?email=${encodeURIComponent(email)}`;
-
-			// 		const response = await fetch(url, {
-			// 			method: 'GET',
-			// 			headers: {
-			// 				'Content-Type': 'application/json',
-			// 				'Authorization': `Bearer ${token}`
-			// 			}
-			// 		});
-
-			// 		const data = await response.json();
-
-			// 		// Convierte data a una cadena JSON antes de almacenarla en localStorage
-			// 		localStorage.setItem('productsbyuser', JSON.stringify(data));
-
-			// 		setStore({ ...store, productsbyuser: data });
-			// 	} catch (error) {
-			// 		console.error("Error loading user products from backend:", error);
-			// 	}
-			// },
-
-
-
-
-
+			},
+			getProductById: async (productId) => {
+				const store = getStore();
+				try {
+					console.log("Solicitando detalles del producto para ID:", productId);
+					const response = await fetch(`${process.env.BACKEND_URL}/api/product/${productId}`);
+					if (!response.ok) {
+						throw new Error(`HTTP error! status: ${response.status}`);
+					}
+					const data = await response.json();
+					console.log("Detalles del producto recibidos:", data);
+					setStore({ ...store, productDetails: data });
+				} catch (error) {
+					console.error("Error loading product details:", error);
+				}
+			},
+			
 		}
 	}; // Add closing parenthesis here
 }
 export default getState;
+

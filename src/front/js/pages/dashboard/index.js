@@ -10,3 +10,4 @@ export * from "./questions";
 export * from "./contact";
 export * from "./profileuser";
 export * from "./filter";
+export * from "./info";

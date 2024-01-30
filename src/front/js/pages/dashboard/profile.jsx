@@ -18,14 +18,10 @@ import {
   Spinner
 } from "@material-tailwind/react";
 import {
-  HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
-  Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard, StatisticsCard } from "../../widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "../../data";
 
 export function Profile() {
   const [loading, setLoading] = useState(true)
@@ -49,6 +45,12 @@ export function Profile() {
       setLoading(false)
     }, 500)
   }, []);
+
+  useEffect(() => {
+    if (store.user.email) {
+      actions.getProductsByUser();
+    }
+  }, [store.user.email, actions]);
 
   if (loading) {
     return <Spinner />
@@ -74,32 +76,8 @@ export function Profile() {
                 <Typography variant="h5" color="blue-gray" className="mb-1">
                   {store.datauser.first_name} {store.datauser.last_name}
                 </Typography>
-                {/* <Typography
-                  variant="small"
-                  className="font-normal text-blue-gray-600"
-                >
-                  CEO / Co-Founder
-                </Typography> */}
               </div>
             </div>
-            {/* <div className="w-96">
-              <Tabs value="app">
-                <TabsHeader>
-                  <Tab value="app">
-                    <HomeIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
-                    App
-                  </Tab>
-                  <Tab value="message">
-                    <ChatBubbleLeftEllipsisIcon className="-mt-0.5 mr-2 inline-block h-5 w-5" />
-                    Message
-                  </Tab>
-                  <Tab value="settings">
-                    <Cog6ToothIcon className="-mt-1 mr-2 inline-block h-5 w-5" />
-                    Settings
-                  </Tab>
-                </TabsHeader>
-              </Tabs>
-            </div> */}
           </div>
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
 
@@ -111,13 +89,6 @@ export function Profile() {
                 apellidoxxx: store.datauser.last_name,
                 email: store.datauser.email,
                 Ubicacion: store.datauser.city,
-                // social: (
-                //   <div className="flex items-center gap-4">
-                //     <i className="fa-brands fa-facebook text-blue-700" />
-                //     <i className="fa-brands fa-twitter text-blue-400" />
-                //     <i className="fa-brands fa-instagram text-purple-500" />
-                //   </div>
-                // ),
               }}
               action={
                 <Tooltip content="Edit Profile">
@@ -132,7 +103,7 @@ export function Profile() {
             Publicaciones
           </Typography>
           <div className="px-4 pb-4 flex flex-row justify-start w-full overflow-auto">
-            {store.products.map((product) => (
+            {store.userProducts.map((product) => (
               <StatisticsCard
                 key={product.id}
                 images_urls={product.images_urls}

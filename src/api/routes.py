@@ -371,7 +371,7 @@ def signupchat():
 
 @api.route("/productsbyuser/<string:emailincoming>", methods=["GET"])
 def get_user_products(emailincoming):
-    print(request_Data =request.json)
+    
     try:
         
         user = User_be.query.filter_by(email=emailincoming).first()
@@ -409,4 +409,20 @@ def obtener_productos_por_categoria(categoria_id):
 
     return jsonify(productos_serializados)
 
-    
+@api.route("/product/<int:productId>", methods=["GET"])
+def get_product_by_id(productId):
+    try:
+        product = Product.query.get(productId)
+        print(f"Solicitud recibida para producto ID: {productId}")
+
+        if not product:
+            return jsonify({"message": "Product not found"}), 404
+
+        serialized_product = product.serialize()
+        print("Enviando producto:", serialized_product)
+
+        return jsonify(serialized_product), 200
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+        print("Error:", str(e))

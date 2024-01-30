@@ -11,7 +11,7 @@ import {
   QuestionMarkCircleIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Chathomefix, Tables, Notifications, PoliticaPrivacidad, Contact, About, Contactanos, Questions, Profileuser, Filter } from "./pages/dashboard";
+import { Home, Profile, Chathomefix, Tables, Notifications, PoliticaPrivacidad, Contact, About, Contactanos, Questions, Profileuser, Filter, Info } from "./pages/dashboard";
 import { SignIn, SignUp, CompletePerfil } from "./pages/auth";
 
 const icon = {
@@ -83,6 +83,12 @@ export const routes = [
         name: "filter",
         path: "/filter/:category_id",
         element: <Filter />,
+      },
+      {
+        icon: <InformationCircleIcon {...icon} />, 
+        name: "Info",
+        path: "/info/:productId", 
+        element: <Info />,
       },
     ],
   },

@@ -16,15 +16,19 @@ import { Carousel } from 'react-responsive-carousel';
 import { Link, Navigate } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
-export function StatisticsCard({ images_urls, key, title, product_description, product_price, product_seller, product_seller_id }) {
+export function StatisticsCard({ images_urls, key, title, product_description, product_price, product_seller, product_seller_id, productId }) {
 
   const [user_id, setUserId] = useState('');
   const navigate = useNavigate();
 
+  const handleLupaClick = () => {
+    console.log("ID del producto a buscar:", productId);
+    navigate(`/dashboard/info/${productId}`);
+  };
 
   const viewProfile = () => {
     setUserId(product_seller_id);
-    navigate(`/dashboard/profileuser/${product_seller_id}`);
+    navigate(`/info/${product_seller_id}`);
   }
 
   const setuser = () => {
@@ -32,16 +36,12 @@ export function StatisticsCard({ images_urls, key, title, product_description, p
     console.log(user_id);
     navigate(`/dashboard/chathomefix/${product_seller_id}`);
   }
+
   return (
     <Card className="max-w-72">
       <CardHeader shadow={true} floated={false} className="h-52 mt-3 mx-3">
         <Carousel className='className="rounded-xl h-52'>
-          {/* <img
-            src={images_urls}
-            alt={`image-0`}
 
-            className="h-52 w-full object-cover"
-          /> */}
           {images_urls && images_urls.map((imageUrl, index) => (
             <img
               key={index}
@@ -76,52 +76,25 @@ export function StatisticsCard({ images_urls, key, title, product_description, p
       </CardBody>
       <CardFooter className="pt-0 px-3 flex flex-row gap-3">
 
-
-          <Button
-            onClick={setuser}
-            ripple={false}
-            fullWidth={true}
-            className="bg-[#2A2A2A] text-white shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 w-[70%]"
-          >
-            Contactar
-          </Button>
-        
-
+        <Button
+          onClick={setuser}
+          ripple={false}
+          fullWidth={true}
+          className="bg-[#2A2A2A] text-white shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 w-[70%]"
+        >
+          Contactar
+        </Button>
 
         <Button
           ripple={false}
           fullWidth={true}
-          onClick={viewProfile}
+          onClick={handleLupaClick} // Modificado para llamar a handleLupaClick
           className="bg-blue-gray-900/10 text-blue-gray-900 h-full shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 w-[30%] p-0 flex flex-row justify-center content-center items-center"
         >
           <MagnifyingGlassIcon className="w-5 h-5 text-blue-gray-900" />
         </Button>
       </CardFooter>
     </Card>
-    // <Card className="border border-blue-gray-100 shadow-sm">
-    //   <CardHeader
-    //     variant="gradient"
-    //     color={color}
-    //     floated={false}
-    //     shadow={false}
-    //     className="absolute grid h-12 w-12 place-items-center"
-    //   >
-    //     {icon}
-    //   </CardHeader>
-    //   <CardBody className="p-4 text-right">
-    //     <Typography variant="small" className="font-normal text-blue-gray-600">
-    //       {title}
-    //     </Typography>
-    //     <Typography variant="h4" color="blue-gray">
-    //       {value}
-    //     </Typography>
-    //   </CardBody>
-    //   {footer && (
-    //     <CardFooter className="border-t border-blue-gray-50 p-4">
-    //       {footer}
-    //     </CardFooter>
-    //   )}
-    // </Card>
   );
 }
 
