@@ -15,6 +15,7 @@ import {
   Switch,
   Tooltip,
   Button,
+  Spinner
 } from "@material-tailwind/react";
 import {
   HomeIcon,
@@ -23,14 +24,12 @@ import {
   PencilIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "../../widgets/cards";
+import { ProfileInfoCard, MessageCard, StatisticsCard } from "../../widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "../../data";
 
-
-
 export function Profile() {
+  const [loading, setLoading] = useState(true)
   const { store, actions } = useContext(Context);
-
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -45,7 +44,16 @@ export function Profile() {
     };
 
     fetchProducts();
+
+    setTimeout(() => {
+      setLoading(false)
+    }, 500)
   }, []);
+
+  if (loading) {
+    return <Spinner />
+  }
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
@@ -100,7 +108,7 @@ export function Profile() {
               description=""
               details={{
                 Nombre: store.datauser.first_name,
-                apellido: store.datauser.last_name,
+                apellidoxxx: store.datauser.last_name,
                 email: store.datauser.email,
                 Ubicacion: store.datauser.city,
                 // social: (
@@ -119,18 +127,25 @@ export function Profile() {
             />
 
           </div>
-          <div className="px-4 pb-4">
-            <Typography variant="h6" color="blue-gray" className="mb-2">
-              Publicaciones
-            </Typography>
-            {/* <Typography
-              variant="small"
-              className="font-normal text-blue-gray-500"
-            >
-              Architects design houses
-            </Typography> */}
+
+          <Typography variant="h6" color="blue-gray" className="mb-2">
+            Publicaciones
+          </Typography>
+          <div className="px-4 pb-4 flex flex-row justify-start w-full overflow-auto">
+            {store.products.map((product) => (
+              <StatisticsCard
+                key={product.id}
+                images_urls={product.images_urls}
+                title={product.name}
+                product_description={product.description}
+                product_price={product.price}
+                product_seller={product.seller.email}
+                product_seller_id={product.seller.id}
+              />
+            ))}
+
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              
+
             </div>
           </div>
         </CardBody>

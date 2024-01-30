@@ -5,7 +5,6 @@ import { Image, Transformation } from 'cloudinary-react';
 import { AdvancedImage } from '@cloudinary/react';
 import { sepia } from "@cloudinary/url-gen/actions/effect";
 
-
 const NuevaPublicacion = () => {
 
   const { store, actions } = useContext(Context);
@@ -30,24 +29,20 @@ const NuevaPublicacion = () => {
     fetchProvinces();
   }, []);
 
-
-
-
   const handleInputChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleImageUpload = async e => {
-    console.log('Cloudinary Config:', cloudinaryConfig); // Asegúrate de que la configuración sea correcta
+    console.log('Cloudinary Config:', cloudinaryConfig);
 
     const files = e.target.files;
 
-    // Realiza la carga de cada imagen y actualiza el estado con las URLs
     const uploadedImages = await Promise.all(
       Array.from(files).map(async file => {
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', 'ml_default'); // Reemplaza con tu upload preset de Cloudinary
+        formData.append('upload_preset', 'ml_default');
 
         try {
           const response = await fetch('https://api.cloudinary.com/v1_1/dpxcrz59c/image/upload', {
@@ -66,7 +61,6 @@ const NuevaPublicacion = () => {
       })
     );
 
-    // Actualiza el estado con las URLs de las imágenes cargadas
     setFormData({ ...formData, imageFiles: uploadedImages });
     console.log('Image URLs:', uploadedImages.filter(url => url !== null));
   };
@@ -75,10 +69,8 @@ const NuevaPublicacion = () => {
     e.preventDefault();
     const { name, description, price, imageFiles } = formData;
 
-    // Llama a la acción para crear una nueva publicación con las URLs de las imágenes
     actions.createProduct(name, description, parseFloat(price), imageFiles);
 
-    // Limpia el formulario después de la creación
     setFormData({ name: '', description: '', price: '', imageFiles: [] });
   };
 

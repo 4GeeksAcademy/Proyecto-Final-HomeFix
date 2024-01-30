@@ -34,7 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			img: "",
 			banner: "",
 			userbe_id: "",
-			datauser:[],
+			datauser: [],
 			categories: [],
 			datauserprofile: [],
 
@@ -88,7 +88,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 					setStore({ ...store, user_id: data.user_id });
 					localStorage.setItem('perfildone', data.perfildone);
-					
+
 
 				} catch (error) {
 					console.error("Error during signup:", error);
@@ -195,13 +195,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({ email, password })
 					});
-			
+
 					if (!response.ok) {
 						// Si la respuesta no es exitosa, lanzar un error con el mensaje de error
 						const errorData = await response.json();
 						throw new Error(errorData.message || 'Error de inicio de sesión');
 					}
-			
+
 					// Si la respuesta es exitosa, obtener los datos de la respuesta
 					const data = await response.json();
 					// Actualizar el store con los datos recibidos
@@ -221,7 +221,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					throw error;
 				}
 			},
-			
+
 
 
 			clearToken: () => {
@@ -232,7 +232,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('userbe_id', '');
 				localStorage.setItem('username', '');
 				localStorage.setItem('mangoid', '');
-				
+
 			},
 
 			signup: async (email, password) => {
@@ -266,7 +266,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							'Content-Type': 'application/json',
 							'Authorization': `Bearer ${localStorage.token}`
 						},
-						body: JSON.stringify({ name, description, price, images_urls, province, categories  })
+						body: JSON.stringify({ name, description, price, images_urls, province, categories })
 					});
 					const data = await response.json();
 
@@ -370,6 +370,24 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error during signup:", error);
 				}
 			},
+			getProductsByUser: async () => {
+				try {
+					const store = getStore();
+					const response = await fetch(`${process.env.BACKEND_URL}/api/productsbyuser/${store.user.email}`, {
+						method: 'GET',
+					});
+
+					if (!response.ok) {
+						throw new Error(`Server response error: ${response.status}`);
+					}
+
+					const data = await response.json();
+					setStore({ ...store, userProducts: data });
+
+				} catch (error) {
+					console.error('Error obtaining products for user:', error);
+				}
+			}
 
 
 
