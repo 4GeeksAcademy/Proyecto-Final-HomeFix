@@ -46,23 +46,18 @@ export function SignIn() {
 
 
     try {
-      // Realizar la solicitud de inicio de sesión
       const response = await actions.setToken(email, password);
 
-      // Verificar el estado de la respuesta
       if (response && response.status === 200) {
-        // Autenticación exitosa, redirigir al home
         setEmail('');
         setPassword('');
-        setSuccessMessage('¡Inicio de sesión exitoso!'); // Establecer el mensaje de éxito
+        setSuccessMessage('¡Inicio de sesión exitoso!'); 
 
         navigate("/home");
       } else {
-        // Error de autenticación, mostrar mensaje de error
         setError('¡Email o contraseña incorrectos! Por favor, intenta de nuevo.');
       }
     } catch (error) {
-      // Error de red u otro tipo de error
       console.error('Error de inicio de sesión:', error);
       setError('¡Email o contraseña incorrectos! Por favor, intenta de nuevo.');
     }

@@ -66,7 +66,7 @@ export function Filter() {
     };
 
     fetchProducts();
-  }, []);
+  }, [category_id]);
 
   if (loading) {
     return <p>Cargando productos...</p>;
@@ -81,7 +81,6 @@ export function Filter() {
   };
   const responsive = {
     superLargeDesktop: {
-      // the naming can be any, depends on you.
       breakpoint: { max: 4000, min: 3000 },
       items: 8
     },
@@ -109,7 +108,6 @@ export function Filter() {
       onMove,
       carouselState: { currentSlide, deviceType }
     } = rest;
-    // onMove means if dragging or swiping in progress.
     return <button onClick={() => onClick()}> <FiChevronRight className="text-black text-2xl" /></button>
   };
 
@@ -128,10 +126,11 @@ export function Filter() {
         show={5}
 
       >
-        {Categorycarddata.map(({ img, text }) => (
+        {Categorycarddata.map(({ img, text, id }) => (
           <CategoryCard
             images_urls={img}
             text={text}
+            id = {id}
 
           >
 
@@ -163,6 +162,8 @@ export function Filter() {
             product_price={product.price}
             product_seller={product.seller.email}
             product_seller_id={product.seller.id}
+            province = {product.province}
+            categoria={product.categories.length > 0 ? product.categories[0].name : ""}
           />
         ))}
 

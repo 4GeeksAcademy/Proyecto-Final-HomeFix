@@ -26,29 +26,14 @@ export function SignUp() {
   const [successMessage, setSuccessMessage] = useState('');
 
   const register = async () => {
-
-    try {
-      await actions.signup(email, password);
-
-      if (response && response.status === 200) {
-        // Autenticación exitosa, redirigir al home
-        setEmail('');
-        setPassword('');
-        setSuccessMessage('¡Inicio de sesión exitoso!'); 
-        navigate("/auth/completeperfil");
-      } else {
-        setError('¡Email o contraseña incorrectos! Por favor, intenta de nuevo.');
-
-      }
-
-    }
-    catch (error) {
-      console.error('Error de inicio de sesión:', error);
-      setError('¡Email o contraseña incorrectos! Por favor, intenta de nuevo.');
-    }
+    await actions.signup(email, password);
+    setEmail('');
+    setPassword('');
+    navigate("/auth/completeperfil");
+  }
 
    
-  }
+  
 
   return (
     <section className="m-8 flex">

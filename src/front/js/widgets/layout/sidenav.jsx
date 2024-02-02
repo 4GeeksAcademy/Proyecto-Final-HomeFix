@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import img from "@img/icono.svg";
+import img from "@img/logo.png";
 import {
   Avatar,
   Button,
@@ -38,15 +38,18 @@ export function Sidenav({ brandImg, brandName, routes }) {
 
   return (
     <aside
-      className={`${sidenavTypes[sidenavType]} ${
-        openSidenav ? "translate-x-0" : "-translate-x-80"
-      } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 `}
+      className={`${sidenavTypes[sidenavType]} ${openSidenav ? "translate-x-0" : "-translate-x-80"
+        } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100 `}
     >
       <div className={`relative`}>
-        <Link to="/" className="py-6 px-8 text-center">
+
+        <Link to="/" className="py-6 px-8  flex text-center justify-start content-center align-items-center gap-3">
+          <img src={img} className='h-14 w-12' alt="" />
+
           <Typography
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
+            className=''
           >
             {brandName}
           </Typography>
@@ -78,16 +81,19 @@ export function Sidenav({ brandImg, brandName, routes }) {
             )}
             {pages.map(({ icon, name, path }) => {
               // Verificar si la página es una página de autenticación
-              if ((name === "Perfil" && !shouldShowProfile()) || (name === "chat" && !shouldShowChat())) {
+              if ((name === "Perfil" && !shouldShowProfile()) || (name === "Chat" && !shouldShowProfile())) {
                 return null;
               }
-              if(name === "PerfilUser"){
+              if (name === "PerfilUser") {
                 return null;
               }
-              if(name === "notifications"){
+              if (name === "notifications") {
                 return null;
               }
-              if(name === "filter"){
+              if (name === "filter") {
+                return null;
+              }
+              if (name === "test") {
                 return null;
               }
               if (layout !== "auth") {
@@ -101,8 +107,8 @@ export function Sidenav({ brandImg, brandName, routes }) {
                             isActive
                               ? sidenavColor
                               : sidenavType === "dark"
-                              ? "white"
-                              : "blue-gray"
+                                ? "white"
+                                : "blue-gray"
                           }
                           className="flex items-center gap-4 px-4 capitalize"
                           fullWidth
@@ -130,7 +136,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
 }
 
 Sidenav.defaultProps = {
-  brandImg: {img},
+  brandImg: { img },
   brandName: "HomeFix",
 };
 

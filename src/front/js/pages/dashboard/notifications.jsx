@@ -12,25 +12,33 @@ import {
   CardHeader,
   Checkbox,
   Input,
-  Button,
+  Button,  
+  Spinner,
   CardBody,
   Icon,
   Select,
   Option,
   Form,
+  Popover,
+  PopoverContent,
+  PopoverHandler,
+  
+  
 } from "@material-tailwind/react";
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { InformationCircleIcon, CloudArrowUpIcon } from "@heroicons/react/24/outline";
 import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 
-const submit = () => {
-  alert("Publicación creada con exito");
-}
+
 
 
 export function Notifications() {
+  const [showSuccessPopover, setShowSuccessPopover] = useState(false); // Estado para controlar la visibilidad del popover de éxito
 
   const { store, actions } = useContext(Context);
+
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -39,6 +47,7 @@ export function Notifications() {
     province: '',
     category: [],
   });
+
 
   useEffect(() => {
     const fetchProvinces = async () => {
@@ -52,6 +61,19 @@ export function Notifications() {
 
     fetchProvinces();
   }, []);
+
+
+
+
+  useEffect(() => {
+    if (showSuccessPopover) {
+      setTimeout(() => {
+        setShowSuccessPopover(false);
+        navigate("/dashboard/profile");
+      }, 1500); // Puedes ajustar el tiempo según tus necesidades
+    }
+  }, [showSuccessPopover]);
+
 
   useEffect(() => {
     const getcategories = async () => {
@@ -112,7 +134,6 @@ export function Notifications() {
       })
     );
 
-    // Actualiza el estado con las URLs de las imágenes cargadas
     setFormData({ ...formData, imageFiles: uploadedImages });
     console.log('Image URLs:', uploadedImages.filter(url => url !== null));
   };
@@ -121,11 +142,9 @@ export function Notifications() {
     e.preventDefault();
     const { name, description, price, imageFiles, province, category } = formData;
 
-    // Llama a la acción para crear una nueva publicación con las URLs de las imágenes
     actions.createProduct(name, description, parseFloat(price), imageFiles, province, category);
-
-    // Limpia el formulario después de la creación
-    setFormData({ name: '', description: '', price: '', imageFiles: [], province: '', category: []});
+    setShowSuccessPopover(true);
+    setFormData({ name: '', description: '', price: '', imageFiles: [], province: '', category: [] });
   };
 
 
@@ -146,8 +165,8 @@ export function Notifications() {
   const alerts = ["gray", "green", "orange", "red"];
 
   return (
-    <div className=" flex max-w-screen-lg flex-col gap-8 bg-white p-4 rounded-xl mt-[4rem]">
-      <Card color="transparent" shadow={false}>
+    <div className="flex justify-center mt-12">
+      <Card color="white" className='p-4' shadow={false}>
         <Typography variant="h4" color="blue-gray">
           Crear una Nueva publicacion
         </Typography>
@@ -161,7 +180,7 @@ export function Notifications() {
             </Typography>
             <Input
               size="lg"
-              placeholder="name@mail.com"
+              placeholder=""
               className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
               type="text"
               name="name"
@@ -185,10 +204,10 @@ export function Notifications() {
               placeholder=" "></textarea>
 
 
-            <Typography variant="h6" color="blue-gray" className="-mb-3">
+            {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
               ¿Quieres Añadirle un precio a lo que haces?
-            </Typography>
-            <Input
+            </Typography> */}
+            {/* <Input
               size="lg"
               type="number"
               name="price"
@@ -199,7 +218,7 @@ export function Notifications() {
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
-            />
+            /> */}
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Selecciona una categoria
             </Typography>
@@ -258,34 +277,96 @@ export function Notifications() {
 
               </select>
             </div>
-         
 
-            <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2">
-                Subir Imágenes:
-                <input
-                  type="file"
-                  name="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                />
+            <div>
+              <label htmlFor="fileUpload" className="block mb-2 text-lg font-medium text-gray-700">
+                Subir imágenes:
+              </label>
+              <input
+                id="fileUpload"
+                type="file"
+                name="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+              <label htmlFor="fileUpload" className="flex justify-center px-4 py-2 bg-black text-white rounded-lg cursor-pointer hover:bg-blue-600">
+                <CloudArrowUpIcon className="w-5 h-5 mr-2" />
+                Seleccionar imágenes
               </label>
 
-              <div className="flex flex-wrap mt-2">
+              <div className="flex flex-wrap mt-4">
                 {formData.imageFiles.map((imageUrl, index) => (
                   <div key={index} className="m-2">
-                    <img src={imageUrl} alt={`Thumbnail ${index}`} className="w-16 h-16 object-cover" />
+                    <img
+                      src={imageUrl}
+                      alt={`Thumbnail ${index}`}
+                      className="w-24 h-24 object-cover rounded-lg shadow-md"
+                    />
                   </div>
                 ))}
               </div>
             </div>
 
+
+
+
+
+
+            {/* <Input
+              type="file"
+              name="file"
+              accept="image/*"
+              multiple
+              capture="Select Images"
+              onChange={handleImageUpload}
+            />
+
+
+            <div className="flex flex-wrap mt-2">
+              {formData.imageFiles.map((imageUrl, index) => (
+                <div key={index} className="m-2">
+                  <img src={imageUrl} alt={`Thumbnail ${index}`} className="w-16 h-16 object-cover" />
+                </div>
+              ))}
+            </div> */}
+
+
           </div>
 
-          <Button className="mt-6" onClick={submit} type="submit" fullWidth>
-            Crear Publicación
-          </Button>
+          <Popover
+            animate={{
+              mount: { scale: 1, y: 0 },
+              unmount: { scale: 0, y: 25 },
+            }}>
+            <PopoverHandler type="submit">
+              <Button className="mt-6" fullWidth>
+                Crear Publicación
+              </Button>
+            </PopoverHandler>
+            {showSuccessPopover && (
+              <PopoverContent className='flex justify-center gap-1'>
+                <Spinner className="h-4 w-4" />Tu publicación se ha creado con éxito
+              </PopoverContent>
+            )}
+          </Popover>
+
+          {/* <Popover
+            animate={{
+              mount: { scale: 1, y: 0 },
+              unmount: { scale: 0, y: 25 },
+            }}
+          >
+            <PopoverHandler>
+              <Button className="mt-6" type="submit" fullWidth>
+                Crear Publicación
+              </Button>
+            </PopoverHandler>
+            <PopoverContent>
+              This is a very beautiful popover, show some love.
+            </PopoverContent>
+          </Popover> */}
 
         </form>
       </Card>
