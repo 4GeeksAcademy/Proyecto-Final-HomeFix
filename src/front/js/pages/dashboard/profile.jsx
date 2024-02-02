@@ -5,31 +5,24 @@ import img from "@img/profile-picture.jpg"
 import {
   Card,
   CardBody,
-  CardHeader,
-  CardFooter,
   Avatar,
   Typography,
-  Tabs,
-  TabsHeader,
-  Tab,
-  Switch,
   Tooltip,
-  Button,
 } from "@material-tailwind/react";
 import {
-  HomeIcon,
-  ChatBubbleLeftEllipsisIcon,
-  Cog6ToothIcon,
   PencilIcon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "../../widgets/cards";
+import { ProfileInfoCard, MessageCard, Profileproductcard } from "../../widgets/cards";
 import { platformSettingsData, conversationsData, projectsData } from "../../data";
 
 
 
 export function Profile() {
   const { store, actions } = useContext(Context);
+  const [loading, setLoading] = useState(true)
+  const [products, setProducts] = useState([]);
+  const [user, setUser] = useState({});
 
 
   useEffect(() => {
@@ -38,6 +31,10 @@ export function Profile() {
         console.log("Fetching products...");
         const user_be = localStorage.getItem('userbe_id')
         await actions.getuser(user_be);
+        setUser(store.datauser);
+        await actions.getProductsByUser();
+        setProducts(store.userProducts);
+        setLoading(false)
         console.log(store.datauser)
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -46,6 +43,14 @@ export function Profile() {
 
     fetchProducts();
   }, []);
+
+  const deleteProductAndUpdateState = async (productId) => {
+    await actions.deleteProduct(productId);
+    setProducts(products.filter(product => product.id !== productId));
+  }
+
+
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
@@ -64,7 +69,7 @@ export function Profile() {
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-                  {store.datauser.first_name} {store.datauser.last_name}
+                  {user.name} {user.apellido}
                 </Typography>
                 {/* <Typography
                   variant="small"
@@ -94,15 +99,14 @@ export function Profile() {
             </div> */}
           </div>
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
-
             <ProfileInfoCard
               title="Perfil de Usuario"
               description=""
               details={{
-                Nombre: store.datauser.first_name,
-                apellido: store.datauser.last_name,
+                Nombre: user.name,
+                apellido: user.apellido,
                 email: store.datauser.email,
-                Ubicacion: store.datauser.city,
+                Ubicacion: user.province,
                 // social: (
                 //   <div className="flex items-center gap-4">
                 //     <i className="fa-brands fa-facebook text-blue-700" />
@@ -119,10 +123,26 @@ export function Profile() {
             />
 
           </div>
-          <div className="px-4 pb-4">
-            <Typography variant="h6" color="blue-gray" className="mb-2">
-              Publicaciones
-            </Typography>
+          <Typography variant="h6" color="blue-gray" className="mb-2">
+            Publicaciones
+          </Typography>
+          <div className="mb-12 mt-12 grid gap-y-10 gap-x-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+
+            {products.map((product) => (
+              <Profileproductcard
+                key={product.id}
+                images_urls={product.images_urls}
+                title={product.name}
+                product_description={product.description}
+                product_price={product.price}
+                product_seller={product.seller.email}
+                product_seller_id={product.seller.id}
+                product_id={product.id}
+                categoria={product.categories.length > 0 ? product.categories[0].name : ""}
+                onDeleteProduct={deleteProductAndUpdateState}
+              />
+            ))}
+
             {/* <Typography
               variant="small"
               className="font-normal text-blue-gray-500"
@@ -130,7 +150,7 @@ export function Profile() {
               Architects design houses
             </Typography> */}
             <div className="mt-6 grid grid-cols-1 gap-12 md:grid-cols-2 xl:grid-cols-4">
-              
+
             </div>
           </div>
         </CardBody>

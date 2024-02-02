@@ -12,6 +12,8 @@ import {
 } from "@material-tailwind/react";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { authorsTableData, projectsTableData } from "../../data";
+import "../css/about.css"
+
 
 export function About() {
   const teamMembers = [

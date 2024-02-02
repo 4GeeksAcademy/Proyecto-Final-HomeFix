@@ -3,15 +3,13 @@ import React from "react";
 import {
   HomeIcon,
   UserCircleIcon,
-  TableCellsIcon,
-  InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
   UserGroupIcon,
   QuestionMarkCircleIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Chathomefix, Tables, Notifications, PoliticaPrivacidad, Contact, About, Contactanos, Questions, Profileuser, Filter } from "./pages/dashboard";
+import { Home, Profile, Chathomefix, Notifications, PoliticaPrivacidad, Contact, About, Questions, Profileuser, Filter, Test } from "./pages/dashboard";
 import { SignIn, SignUp, CompletePerfil } from "./pages/auth";
 
 const icon = {
@@ -38,7 +36,7 @@ export const routes = [
 
       {
         icon: <RectangleStackIcon {...icon} />,
-        name: "chat",
+        name: "Chat",
         path: "/chathomefix/:user_id",
         element: <Chathomefix />,
       },
@@ -83,6 +81,12 @@ export const routes = [
         name: "filter",
         path: "/filter/:category_id",
         element: <Filter />,
+      },
+      {
+        icon: <UserCircleIcon {...icon} />,
+        name: "test",
+        path: "/test/:product_id",
+        element: <Test />,
       },
     ],
   },

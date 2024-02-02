@@ -32,17 +32,12 @@ export function CompletePerfil() {
   const userbe_id = localStorage.getItem('userbe_id');
 
   const register = async () => {
+
     try {
-      // Llama a completeperfil() y espera a que se complete
-      await actions.completeperfil(first_name, last_name, address_line, city, region, postal_code, country, email);
+      await actions.updateuserbe(first_name, last_name, address_line, city, region, postal_code, country, email);
 
-      // Si completeperfil() se completa sin errores, llama a createWallet()
-      await createWallet();
-
-      // Después de crear la cartera, actualiza el usuario
       await update_userbe();
 
-      // Restablece los valores de los campos de entrada
       setFirst_Name('');
       setLastName('');
       setRegion('');
@@ -50,8 +45,10 @@ export function CompletePerfil() {
       setPostal_code('');
       setCountry('');
       setAddress_Line('');
+      navigate("/dashboard/home");
+
+
     } catch (error) {
-      // Maneja cualquier error que ocurra durante la ejecución de completeperfil()
       console.error('Error en register:', error);
     }
   }
@@ -60,9 +57,7 @@ export function CompletePerfil() {
     await actions.updateuserbe(userbe_id, mangoid, mangoidwallet, first_name, last_name, perfildone);
   }
 
-  // const createWallet = async () => {
-  //   await actions.crear_wallet(localStorage.idmango);
-  // }
+ 
 
 
   return (
@@ -100,7 +95,7 @@ export function CompletePerfil() {
             <Input
               size="lg"
               type="text"
-              label="Nombre"
+              label="Direccion"
               value={address_line}
               onChange={e => setAddress_Line(e.target.value)}
             />

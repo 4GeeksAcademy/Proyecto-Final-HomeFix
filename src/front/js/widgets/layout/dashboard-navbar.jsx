@@ -79,11 +79,14 @@ export function DashboardNavbar() {
               color="blue-gray"
               className="font-normal"
             >
-              {page}
+              {page === "home" ? "Inicio" : page === "profile" ? "Perfil" : page === "chathomefix" ? "Mensajes" : page === "about" ? "Acerca de" : page === "politicaprivacidad" ? "Politica de Privacidad" : page === "Contact" ? "Contacto" : page === "questions" ? "Preguntas y Respuestas" :page === "filter" ? "Categorias" : page === "test" ? "Detalle Publicación" : page === "notifications" ? "Nueva Publicación" : "Dashboard"}
+              
+
+
             </Typography>
           </Breadcrumbs>
           <Typography variant="h6" color="blue-gray">
-            {page}
+          {page === "home" ? "Inicio" : page === "profile" ? "Perfil" : page === "chathomefix" ? "Mensajes" : page === "about" ? "Acerca de" : page === "politicaprivacidad" ? "Politica de Privacidad" : page === "Contact" ? "Contacto" : page === "questions" ? "Preguntas y Respuestas" :page === "filter" ? "Categorias" : page === "test" ? "Detalle Publicación" : page === "notifications" ? "Nueva Publicación" : "Dashboard"}
           </Typography>
         </div>
         <div className="flex items-center">
@@ -107,7 +110,7 @@ export function DashboardNavbar() {
                 className="hidden items-center gap-1 px-4 xl:flex normal-case"
               >
                 <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-                Sign In
+                Ingresar / Registrarse
               </Button>
               <IconButton
                 variant="text"

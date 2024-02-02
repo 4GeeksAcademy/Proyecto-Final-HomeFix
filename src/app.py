@@ -20,7 +20,7 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 
 app = Flask(__name__)
-CORS(api)
+CORS(api, origins=["http://localhost:3000", "http://localhost:3001","http://localhost:3001/api/todoist/auth", "http://localhost:3001/api/todoist/callback","http://127.0.0.1:3000/home?, http://localhost:3000/dashboard/profile"])
 
 
 app.url_map.strict_slashes = False

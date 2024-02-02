@@ -4,18 +4,20 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User_be, Product, Province, Category
 from api.utils import generate_sitemap, APIException
-from flask_cors import CORS
+# from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from werkzeug.security import generate_password_hash
 import json
 from datetime import timedelta
 from dotenv import load_dotenv
 import os, requests
+from flask_cors import CORS, cross_origin
 
 
 api = Blueprint('api', __name__)
 
-CORS(api, origins=["http://localhost:3000", "http://localhost:3001","http://localhost:3001/api/todoist/auth", "http://localhost:3001/api/todoist/callback","http://127.0.0.1:3000/home?"])
+CORS(api, origins=["http://localhost:3000", "http://localhost:3001","http://localhost:3001/api/todoist/auth", "http://localhost:3001/api/todoist/callback","http://127.0.0.1:3000/home?, http://localhost:3000/dashboard/profile"])
+
 
 load_dotenv()
 
@@ -60,15 +62,14 @@ def transfer_funds():
     data = request.json
     print(data)
     debited_funds = data.get('debited_funds')
-    amount = debited_funds.get('amount')  # Obtener el monto
+    amount = debited_funds.get('amount') 
     currency = debited_funds.get('currency') 
 
     fees_funds = data.get('fees')
-    amountfees = fees_funds.get('amount')  # Obtener el monto
+    amountfees = fees_funds.get('amount') 
     currencyfees = fees_funds.get('currency')
 
 
-    # Obtener los datos necesarios de la solicitud JSON
     author = 213999456,
     author_id = "213993872",
 
@@ -80,7 +81,6 @@ def transfer_funds():
 
 
 
-    # Realizar la transferencia de fondos
 
     transfer = Transfer(author=author, 
                     credited_user=credited_user, 
@@ -90,23 +90,7 @@ def transfer_funds():
                     credited_wallet=credited_wallet)
     transfer.save()
 
-    # author = "213995910",
-    # debited_funds = Money(1000, 'EUR')
-    # fees = Money(100, 'EUR')
-    # credited_wallet_id = "213994172"
-    # card_id = "213994171"
-    # secure_mode = "DEFAULT"
-    # secure_mode_return_url = "https://www.ulule.com/"
-
-    # # Realizar la transferencia de fondos
-    # transfer = DirectPayIn(author=author, 
-    #                 debited_funds=debited_funds, 
-    #                 fees=fees, 
-    #                 credited_wallet_id=credited_wallet_id, 
-    #                 card_id=card_id, 
-    #                 secure_mode=secure_mode, 
-    #                 secure_mode_return_url=secure_mode_return_url)
-    # transfer.save()
+   
     
     return jsonify({'message': 'Transfer completed successfully'}), 200
 
@@ -243,16 +227,13 @@ def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
 
-    # Query your database for username and password
     user = User_be.query.filter_by(email=email, password=password).first()
 
     print(user)
 
     if user is None:
-        # The user was not found on the database
         return jsonify({"msg": "Bad email or password"}), 401
     
-    # Create a new token with the user id inside
     access_token = create_access_token(identity=user.id, expires_delta=timedelta(days=1))
     return jsonify({ "token": access_token, "userbe_id": user.id, "email": user.email, "img" : user.img, "banner" : user.banner, "name" : user.nombre }), 200
 
@@ -277,12 +258,10 @@ def get_user_by_id(userbe_id):
 @api.route("/protected", methods=["GET"])
 @jwt_required()
 def protected():
-    # Access the identity of the current user with get_jwt_identity
     current_user_id = get_jwt_identity()
     user = User_be.query.filter_by(id = current_user_id).first()
     
     return jsonify({"id": user.id, "username": user.email }), 200
-    # return jsonify({"id": "cualquier cosa" }), 200
 
 @api.route("/products", methods=["POST"])
 @jwt_required()
@@ -362,19 +341,16 @@ def signupchat():
             "username": request.get_json()['username'],
             "secret": request.get_json()['secret'],
             "email": request.get_json()['email'],
-            # "first_name": request.get_json()['first_name'],
-            # "last_name": request.get_json()['last_name'],
+           
         },
        headers={ "Private-Key": os.environ['CHAT_ENGINE_PRIVATE_KEY'] }
     )
     return response.json()
 
-@api.route("/productsbyuser", methods=["GET"])
-@jwt_required()
-def get_user_products():
+@api.route("/productsbyuser/<string:emailincoming>", methods=["GET"])
+def get_user_products(emailincoming):
     try:
-        current_user_email = get_jwt_identity()
-        user = User_be.query.filter_by(email=current_user_email).first()
+        user = User_be.query.filter_by(email=emailincoming).first()
 
         if not user:
             return jsonify({"message": "User not found"}), 404
@@ -407,4 +383,46 @@ def obtener_productos_por_categoria(categoria_id):
 
     return jsonify(productos_serializados)
 
+
+@api.route('/deleteproduct/<int:product_id>', methods=["DELETE"])
+@jwt_required()
+def delete_product(product_id):
+    try:
+        current_user_id = get_jwt_identity()
+        user = User_be.query.filter_by(id=current_user_id).first()
+
+        if not user:
+            return jsonify({"message": "User not found"}), 404
+
+        # product = Product.query.filter_by(id=product_id, seller_id=user.id).first()
+        product = Product.query.filter_by(id=product_id).first()
+
+        if not product:
+            return jsonify({"message": "Product not found or unauthorized"}), 404
+
+        db.session.delete(product)
+        db.session.commit()
+
+        return jsonify({"message": "Product deleted successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+    
+@api.route("/product/<int:productId>", methods=["GET"])
+def get_product_by_id(productId):
+    try:
+        product = Product.query.get(productId)
+        print(f"Solicitud recibida para producto ID: {productId}")
+
+        if not product:
+            return jsonify({"message": "Product not found"}), 404
+
+        serialized_product = [product.serialize()]
+        print("Enviando producto:", serialized_product)
+
+        return jsonify(serialized_product), 200
+
+    except Exception as e:
+        return jsonify({"message": str(e)}), 500
+        print("Error:", str(e))
     
